@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 using ToB.Interfaces;
+using ToB.DB;
 
 namespace ToB.Controllers
 {
@@ -9,18 +12,18 @@ namespace ToB.Controllers
     public sealed class RandomizerController : ControllerBase
     {
         private readonly IRandomizer random;
+        private readonly RandomizerContext context;
 
-        public RandomizerController(IRandomizer random)
+        public RandomizerController(IRandomizer random, RandomizerContext context)
         {
             this.random = random;
+            this.context = context;
         }
 
         [HttpGet]
-        public ActionResult<int> Get(int min, int max)
+        public ActionResult<IEnumerable<Registry>> Get()
         {
-            //TODO : validation
-
-            return random.ToRandom(min, max);
+            return context.Registries.ToArray();
         }
     }
 }
