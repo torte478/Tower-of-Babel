@@ -2,8 +2,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
+using ToB.Extensions;
 using ToB.Interfaces;
 using ToB.DB;
+using ToB.DTO;
 
 namespace ToB.Controllers
 {
@@ -21,9 +23,21 @@ namespace ToB.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Registry>> Get()
+        public ActionResult<RegistriesDto> Get(int page, int start, int limit)
         {
-            return context.Registries.ToArray();
+            return context
+                   .Registries
+                   .Select(_ => new RegistryDto()
+                   {
+                       Id = _.Id,
+                       Label = _.Label
+                   })
+                   .ToArray()
+                   ._(_ => new RegistriesDto()
+                   {
+                       Success = true,
+                       Data = _
+                   });
         }
     }
 }
