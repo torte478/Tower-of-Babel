@@ -6,6 +6,7 @@
    
    initComponent: function() {
        this.columns = [
+           { header: 'Parent', dataIndex: 'parent'},
            { header: 'Label', dataIndex: 'label'}
        ];
        

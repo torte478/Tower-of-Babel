@@ -30,6 +30,7 @@ namespace ToB.Controllers
                    .Select(_ => new RegistryDto()
                    {
                        Id = _.Id,
+                       Parent = _.Parent,
                        Label = _.Label
                    })
                    .ToArray()

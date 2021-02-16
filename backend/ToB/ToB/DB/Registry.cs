@@ -8,6 +8,7 @@ namespace ToB.DB
     public partial class Registry
     {
         public int Id { get; set; }
+        public int? Parent { get; set; }
         public string Label { get; set; }
     }
 }

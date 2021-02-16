@@ -29,6 +29,8 @@ namespace ToB.DB
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Parent).HasColumnName("parent");
+
                 entity.Property(e => e.Label)
                     .IsRequired()
                     .HasMaxLength(128)
