@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
-using ToB.Extensions;
 using ToB.Interfaces;
-using ToB.DB;
 using ToB.DTO;
 
 namespace ToB.Controllers
@@ -15,22 +12,19 @@ namespace ToB.Controllers
     [ApiController]
     public sealed class RandomizerController : ControllerBase
     {
-        private readonly IRandomizer random;
-        private readonly RandomizerContext context;
+        private readonly IRegistries registries;
 
-        public RandomizerController(IRandomizer random, RandomizerContext context)
+        public RandomizerController(IRegistries registries)
         {
-            this.random = random;
-            this.context = context;
+            this.registries = registries;
         }
 
         [HttpGet]
         public ActionResult<List<RegistryDto>> Get(int root)
         {
-            return context
-                .Registries
-                .Where(_ => _.Parent == root)
-                .Select(_ => new RegistryDto()
+            return registries
+                .ToAll(root)
+                .Select(_ => new RegistryDto
                 {
                     Id = _.Id,
                     Parent = _.Parent,
@@ -43,46 +37,23 @@ namespace ToB.Controllers
         [Route("getRandom")]
         public ActionResult<string> GetRandom(int root)
         {
-            var result = new StringBuilder();
-            while (true)
-            {
-                var items = context
-                    .Registries
-                    .Where(_ => _.Parent == root)
-                    .ToList();
-
-                if (items.Count == 0)
-                    break;
-                
-                var item = items[random.ToRandom(0, items.Count - 1)];
-                result.AppendLine(item.Label);
-                root = item.Id;
-            }
-
-            return result.ToString();
+            var path = registries
+                .ToRandom(root)
+                .Select(_ => _.Label);
+            
+            return string.Join(Environment.NewLine, path);
         }
 
         [HttpDelete]
         public void Delete(int id)
         {
-            var item = context.Registries.FirstOrDefault(_ => _.Id == id);
-            
-            if (item != null)
-            {
-                context.Registries.Remove(item);
-                context.SaveChanges();
-            }
+            registries.Delete(id);
         }
 
         [HttpPost]
         public void Post([FromBody] RegistryDto registry)
         {
-            context.Registries.Add(new Registry()
-            {
-                Label = registry.Label,
-                Parent = registry.Parent
-            });
-            context.SaveChanges();
+            registries.Add(registry.Parent, registry.Label);
         }
     }
 }

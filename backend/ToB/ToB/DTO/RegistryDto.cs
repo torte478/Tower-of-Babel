@@ -1,6 +1,6 @@
 ﻿namespace ToB.DTO
 {
-    public class RegistryDto
+    public class RegistryDto //TODO : to c# 9
     {
         public int Id { get; set; }
         public int? Parent { get; set; }
