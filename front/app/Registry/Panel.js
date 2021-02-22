@@ -1,10 +1,13 @@
 ﻿Ext.define('ToB.Registry.Panel', {
     extend: 'Ext.panel.Panel',
     
-    requires: ['ToB.Registry.Grid'],
+    requires: [
+        'ToB.Registry.AddWindow',
+        'ToB.Registry.Grid'
+    ],
 
     title: 'Registry list',
-
+    
     listeners: {
         beforerender: function () {
             let me = this;
@@ -16,7 +19,8 @@
     grid: null,
     parentLevel: null,
     currentLevel: 1,
-    
+    url: 'http://localhost:5010/api/randomizer',
+
     constructor: function (config) {
         let me = this,
             items = me.getItems();
@@ -30,13 +34,16 @@
     getItems: function() {
         let me = this;
         
-        me.grid = Ext.create('ToB.Registry.Grid');
+        me.grid = Ext.create('ToB.Registry.Grid', {
+            region: 'center'
+        });
+        me.grid.on('itemdblclick', function (sender, record) {
+           me.loadLevel(record.data.id); 
+        });
         
         return [
             Ext.create('Ext.panel.Panel', {
-                layout: {
-                    type: 'hbox'
-                },
+                region: 'north',
                 items: [
                     {
                         xtype: 'button',
@@ -64,12 +71,23 @@
                                 me.removeItem();
                             }
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Add',
+                        listeners: {
+                            click: function () {
+                                me.addItem();
+                            }
+                        }
                     }
                 ]
             }),
+            // me.grid
             Ext.create('Ext.panel.Panel', {
                 layout: 'fit',
-                height: 500,
+                width: 400,
+                height: 300,
                 items: [me.grid]
             })
         ]
@@ -79,7 +97,7 @@
         let me = this;
 
         Ext.Ajax.request({
-            url: 'http://localhost:5010/api/randomizer?root=' + root,
+            url: me.url + '?root=' + root,
 
             success: function (response) {
                 let result = JSON.parse(response.responseText),
@@ -98,9 +116,7 @@
                 
             },
 
-            failure: function (response) {
-                console.log(response.statusText);
-            }
+            failure: me.onAjaxRequestFailure
         })
     },
     
@@ -131,17 +147,50 @@
         if (isSingle) {
             let item = selection.items[0].data;
             Ext.Ajax.request({
-                url: 'http://localhost:5010/api/randomizer?id=' + item.id,
+                url: me.url + '?id=' + item.id,
                 method: "DELETE",
                 
                 success: function () {
                     me.loadLevel(me.currentLevel);
                 },
                 
-                failure: function (response) {
-                    console.log(response.statusText);
-                }
+                failure: me.onAjaxRequestFailure
             });
         }
+    },
+    
+    onAjaxRequestFailure: function (response) {
+        console.log(response.statusText);
+    },
+    
+    addItem: function () {
+        let me = this,
+            wnd = Ext.create('ToB.Registry.AddWindow');
+        
+        wnd.okButton.on('click', function () {
+            let label = wnd.textField.getValue();
+            if (label !== ''){
+               Ext.Ajax.request({
+                   url: me.url,
+                   method: "POST",
+                   headers: {
+                       'Content-Type': 'application/json' 
+                   },
+                   
+                   jsonData: {
+                       parent: me.currentLevel,
+                       label: label
+                   },
+                   
+                   success: function () {
+                       me.loadLevel(me.currentLevel);
+                   },
+                   
+                   failure: me.onAjaxRequestFailure
+               }) 
+            }
+            wnd.close();
+        })
+        wnd.show();
     }
 })

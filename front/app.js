@@ -13,6 +13,11 @@ Ext.application({
             items: [
                 Ext.create('Ext.panel.Panel', {
                     title: 'Get random position',
+                    height: 100,
+                    region: 'north',
+                    layout: {
+                        type: 'hbox'
+                    },
                     items: [
                         {
                             xtype: 'button',
@@ -24,7 +29,11 @@ Ext.application({
                         }
                     ]
                 }),
-                Ext.create('ToB.Registry.Panel')
+                Ext.create('ToB.Registry.Panel', {
+                    layout: {
+                        type: 'vbox'
+                    },
+                })
             ]
         });
     }

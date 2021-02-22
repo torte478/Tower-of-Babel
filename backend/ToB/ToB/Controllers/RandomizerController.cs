@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,6 +48,17 @@ namespace ToB.Controllers
                 context.Registries.Remove(item);
                 context.SaveChanges();
             }
+        }
+
+        [HttpPost]
+        public void Post([FromBody] RegistryDto registry)
+        {
+            context.Registries.Add(new Registry()
+            {
+                Label = registry.Label,
+                Parent = registry.Parent
+            });
+            context.SaveChanges();
         }
     }
 }
