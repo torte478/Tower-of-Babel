@@ -23,22 +23,18 @@ namespace ToB.Controllers
         }
 
         [HttpGet]
-        public ActionResult<RegistriesDto> Get(int page, int start, int limit)
+        public ActionResult<List<RegistryDto>> Get(int root)
         {
             return context
-                   .Registries
-                   .Select(_ => new RegistryDto()
-                   {
-                       Id = _.Id,
-                       Parent = _.Parent,
-                       Label = _.Label
-                   })
-                   .ToArray()
-                   ._(_ => new RegistriesDto()
-                   {
-                       Success = true,
-                       Data = _
-                   });
+                .Registries
+                .Where(_ => _.Parent == root)
+                .Select(_ => new RegistryDto()
+                {
+                    Id = _.Id,
+                    Parent = _.Parent,
+                    Label = _.Label
+                })
+                .ToList();
         }
     }
 }

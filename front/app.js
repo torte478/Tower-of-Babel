@@ -1,21 +1,31 @@
 Ext.application({
-    requires: ['Ext.container.Viewport'],
-    name: 'AM',
+    requires: [
+        'Ext.container.Viewport',
+        'ToB.Registry.Panel'
+    ],
+    
+    name: 'ToB',
 
     appFolder: 'app',
 
-    controllers: [
-        'Registries'
-    ],
-
     launch: function() {
         Ext.create('Ext.container.Viewport', {
-            layout: 'border',
-            items: {
-                xtype: 'registrylist',
-                region: 'center',
-                margins: '5, 5, 5, 5'
-            }
+            items: [
+                Ext.create('Ext.panel.Panel', {
+                    title: 'Get random position',
+                    items: [
+                        {
+                            xtype: 'button',
+                            text: 'GetRandom'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Result',
+                        }
+                    ]
+                }),
+                Ext.create('ToB.Registry.Panel')
+            ]
         });
     }
 });
