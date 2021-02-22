@@ -36,5 +36,17 @@ namespace ToB.Controllers
                 })
                 .ToList();
         }
+
+        [HttpDelete]
+        public void Delete(int id)
+        {
+            var item = context.Registries.FirstOrDefault(_ => _.Id == id);
+            
+            if (item != null)
+            {
+                context.Registries.Remove(item);
+                context.SaveChanges();
+            }
+        }
     }
 }

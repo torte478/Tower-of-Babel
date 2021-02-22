@@ -9,12 +9,13 @@
         beforerender: function () {
             let me = this;
             
-            me.loadLevel(me.parentLevel);
+            me.loadLevel(me.currentLevel);
         }
     },
     
     grid: null,
-    parentLevel: 1,
+    parentLevel: null,
+    currentLevel: 1,
     
     constructor: function (config) {
         let me = this,
@@ -54,6 +55,15 @@
                                 me.upLevel();
                             }
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Remove',
+                        listeners: {
+                            click: function () {
+                                me.removeItem();
+                            }
+                        }
                     }
                 ]
             }),
@@ -71,21 +81,24 @@
         Ext.Ajax.request({
             url: 'http://localhost:5010/api/randomizer?root=' + root,
 
-            success: function (response, options) {
+            success: function (response) {
                 let result = JSON.parse(response.responseText),
                     exists = result.length > 0,
                     store = me.grid.getStore();
 
                 if (exists) {
+                    if (root !== me.currentLevel) {
+                        me.parentLevel = me.currentLevel;
+                        me.currentLevel = result[0].parent;    
+                    }
                     store.removeAll();
-                    
                     for (let  i = 0; i < result.length; ++i)
                         store.add(result[i])    
                 }
                 
             },
 
-            failure: function (response, options) {
+            failure: function (response) {
                 console.log(response.statusText);
             }
         })
@@ -98,7 +111,6 @@
         
         if (isSingle) {
             let item  = selection.items[0].data;
-            me.parentLevel = item.parent;
             me.loadLevel(item.id);
         }
     },
@@ -106,8 +118,30 @@
     upLevel : function() {
         let me = this;
         
-        if (me.parentLevel > 0) {
+        if (me.parentLevel && me.parentLevel > 0) {
             me.loadLevel(me.parentLevel);
+        }
+    },
+
+    removeItem: function() {
+        let me = this,
+            selection = me.grid.getSelectionModel().selected,
+            isSingle = selection.getCount() === 1;
+        
+        if (isSingle) {
+            let item = selection.items[0].data;
+            Ext.Ajax.request({
+                url: 'http://localhost:5010/api/randomizer?id=' + item.id,
+                method: "DELETE",
+                
+                success: function () {
+                    me.loadLevel(me.currentLevel);
+                },
+                
+                failure: function (response) {
+                    console.log(response.statusText);
+                }
+            });
         }
     }
 })
