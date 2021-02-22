@@ -15,11 +15,13 @@
             me.loadLevel(me.currentLevel);
         }
     },
-    
+
+    url: 'http://localhost:5010/api/randomizer',
+
     grid: null,
+    
     parentLevel: null,
     currentLevel: 1,
-    url: 'http://localhost:5010/api/randomizer',
 
     constructor: function (config) {
         let me = this,
@@ -35,15 +37,14 @@
         let me = this;
         
         me.grid = Ext.create('ToB.Registry.Grid', {
-            region: 'center'
+            // layout: 'fit'
         });
         me.grid.on('itemdblclick', function (sender, record) {
            me.loadLevel(record.data.id); 
         });
         
         return [
-            Ext.create('Ext.panel.Panel', {
-                region: 'north',
+            Ext.create('Ext.panel.Panel', {                
                 items: [
                     {
                         xtype: 'button',
@@ -80,14 +81,22 @@
                                 me.addItem();
                             }
                         }
-                    }
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'GetRandom',
+                        listeners: {
+                            click: function () {
+                                me.getRandomItem();
+                            }
+                        }
+                    },
                 ]
             }),
             // me.grid
             Ext.create('Ext.panel.Panel', {
                 layout: 'fit',
-                width: 400,
-                height: 300,
+                height: 400,
                 items: [me.grid]
             })
         ]
@@ -165,7 +174,10 @@
     
     addItem: function () {
         let me = this,
-            wnd = Ext.create('ToB.Registry.AddWindow');
+            wnd = Ext.create('ToB.Registry.AddWindow', {
+                x: 10,
+                y: 10
+            });
         
         wnd.okButton.on('click', function () {
             let label = wnd.textField.getValue();
@@ -192,5 +204,20 @@
             wnd.close();
         })
         wnd.show();
+    },
+
+    getRandomItem: function () {
+        let me = this;
+        
+        Ext.Ajax.request({
+            url: me.url + '/getRandom?root=' + me.currentLevel,
+            
+            success: function(response) {
+                alert(response.responseText);
+            },
+            
+            
+            failure: me.onAjaxRequestFailurem,
+        })
     }
 })

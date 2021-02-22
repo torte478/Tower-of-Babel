@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
 using ToB.Extensions;
@@ -36,6 +37,29 @@ namespace ToB.Controllers
                     Label = _.Label
                 })
                 .ToList();
+        }
+
+        [HttpGet]
+        [Route("getRandom")]
+        public ActionResult<string> GetRandom(int root)
+        {
+            var result = new StringBuilder();
+            while (true)
+            {
+                var items = context
+                    .Registries
+                    .Where(_ => _.Parent == root)
+                    .ToList();
+
+                if (items.Count == 0)
+                    break;
+                
+                var item = items[random.ToRandom(0, items.Count - 1)];
+                result.AppendLine(item.Label);
+                root = item.Id;
+            }
+
+            return result.ToString();
         }
 
         [HttpDelete]
