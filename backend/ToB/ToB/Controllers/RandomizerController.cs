@@ -12,9 +12,9 @@ namespace ToB.Controllers
     [ApiController]
     public sealed class RandomizerController : ControllerBase
     {
-        private readonly IRegistries registries;
+        private readonly IRandomRegistries registries;
 
-        public RandomizerController(IRegistries registries)
+        public RandomizerController(IRandomRegistries registries)
         {
             this.registries = registries;
         }

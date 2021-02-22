@@ -5,7 +5,8 @@ using NUnit.Framework;
 
 namespace ToB.Services.Tests
 {
-    public class Randomizer_Should
+    [TestFixture]
+    internal sealed  class Randomizer_Should
     {
         [Test]
         public void CorrectSetMaxValue_WhenReturnRandomAtInterval()

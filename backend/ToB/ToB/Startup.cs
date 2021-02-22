@@ -37,7 +37,12 @@ namespace ToB
                 options.UseNpgsql(Configuration.GetConnectionString("RandomizerContext")));
             
             services.AddTransient<IRandomizer>(_ => new Randomizer(new Random(DateTime.Now.Millisecond)));
-            services.AddTransient<IRegistries, EntityRegistries>();
+            services.AddTransient<ISqlRequests<RandomizerContext>, SqlRequests<RandomizerContext>>();
+            
+            // services.AddTransient<IRegistries, EntityRegistries>();
+            services.AddTransient<IRegistries, SqlRegistries>();
+            
+            services.AddTransient<IRandomRegistries, RandomRegistries>();
             
             services.AddControllers();
         }

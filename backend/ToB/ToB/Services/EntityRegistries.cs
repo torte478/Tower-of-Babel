@@ -8,12 +8,10 @@ namespace ToB.Services
     public sealed class EntityRegistries : IRegistries
     {
         private readonly RandomizerContext context;
-        private readonly IRandomizer randomizer;
 
-        public EntityRegistries(RandomizerContext context, IRandomizer randomizer)
+        public EntityRegistries(RandomizerContext context)
         {
             this.context = context;
-            this.randomizer = randomizer;
         }
 
         public List<Registry> ToAll(int root)
@@ -22,24 +20,6 @@ namespace ToB.Services
                 .Registries
                 .Where(_ => _.Parent == root)
                 .ToList();
-        }
-
-        public List<Registry> ToRandom(int root)
-        {
-            var result = new List<Registry>();
-            while (true)
-            {
-                var items = ToAll(root);
-
-                if (items.Count == 0)
-                    break;
-                
-                var item = items[randomizer.ToRandom(0, items.Count - 1)];
-                result.Add(item);
-                root = item.Id;
-            }
-
-            return result;
         }
 
         public IRegistries Delete(int id)
