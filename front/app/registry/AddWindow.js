@@ -1,4 +1,4 @@
-﻿Ext.define('ToB.Registry.AddWindow', {
+﻿Ext.define('ToB.registry.AddWindow', {
     extend: 'Ext.window.Window',
     
     title: 'Add item',

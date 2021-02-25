@@ -8,17 +8,17 @@ namespace ToB.Services
 {
     public sealed class SqlRegistries : IRegistries
     {
-        private readonly ISqlRequests<RandomizerContext> requests;
+        private readonly ISqlRequests<RandomizerContext> sql;
 
-        public SqlRegistries(ISqlRequests<RandomizerContext> requests)
+        public SqlRegistries(ISqlRequests<RandomizerContext> sql)
         {
-            this.requests = requests;
+            this.sql = sql;
         }
 
         public List<Registry> ToAll(int root)
         {
-            return requests
-                .Select(
+            return sql
+                .Read(
                     _ => _.Registries,
                     $"SELECT * FROM registry re WHERE re.parent = {root};")
                 .ToList();
@@ -26,14 +26,14 @@ namespace ToB.Services
 
         public IRegistries Delete(int id)
         {
-            requests.Change($"DELETE FROM registry re WHERE re.id = {id};");
+            sql.Write($"DELETE FROM registry re WHERE re.id = {id};");
             return this;
         }
 
         public IRegistries Add(int? parent, string label)
         {
             //TODO : sql-injections!
-            requests.Change(
+            sql.Write(
                 $"INSERT INTO registry (parent, label) VALUES ({parent}, '{label}');");
 
             return this;

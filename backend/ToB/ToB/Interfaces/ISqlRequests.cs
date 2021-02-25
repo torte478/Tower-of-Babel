@@ -6,9 +6,9 @@ namespace ToB.Interfaces
 {
     public interface ISqlRequests<out TContext> where TContext : DbContext
     {
-        IQueryable<T> Select<T>(Func<TContext, DbSet<T>> toTable, string sql) 
+        IQueryable<T> Read<T>(Func<TContext, DbSet<T>> toTable, string sql) 
             where T : class;
 
-        ISqlRequests<TContext> Change(string sql);
+        ISqlRequests<TContext> Write(string sql);
     }
 }

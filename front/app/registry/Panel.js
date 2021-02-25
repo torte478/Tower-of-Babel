@@ -1,12 +1,12 @@
-﻿Ext.define('ToB.Registry.Panel', {
+﻿Ext.define('ToB.registry.Panel', {
     extend: 'Ext.panel.Panel',
     
     requires: [
-        'ToB.Registry.AddWindow',
-        'ToB.Registry.Grid'
+        'ToB.registry.AddWindow',
+        'ToB.registry.Grid'
     ],
 
-    title: 'Registry list',
+    title: 'registry list',
     
     listeners: {
         beforerender: function () {
@@ -36,7 +36,7 @@
     getItems: function() {
         let me = this;
         
-        me.grid = Ext.create('ToB.Registry.Grid', {
+        me.grid = Ext.create('ToB.registry.Grid', {
             // layout: 'fit'
         });
         me.grid.on('itemdblclick', function (sender, record) {
@@ -174,7 +174,7 @@
     
     addItem: function () {
         let me = this,
-            wnd = Ext.create('ToB.Registry.AddWindow', {
+            wnd = Ext.create('ToB.registry.AddWindow', {
                 x: 10,
                 y: 10
             });

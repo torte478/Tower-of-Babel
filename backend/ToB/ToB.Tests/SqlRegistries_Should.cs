@@ -59,13 +59,13 @@ namespace ToB.Services.Tests
         {
             public string Last { get; private set; }
             
-            public IQueryable<T> Select<T>(Func<RandomizerContext, DbSet<T>> toTable, string sql) where T : class
+            public IQueryable<T> Read<T>(Func<RandomizerContext, DbSet<T>> toTable, string sql) where T : class
             {
                 Last = sql;
                 return Enumerable.Empty<T>().AsQueryable();
             }
 
-            public ISqlRequests<RandomizerContext> Change(string sql)
+            public ISqlRequests<RandomizerContext> Write(string sql)
             {
                 Last = sql;
                 return this;

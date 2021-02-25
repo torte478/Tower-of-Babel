@@ -1,9 +1,9 @@
-﻿Ext.define('ToB.Registry.Grid', {
+﻿Ext.define('ToB.registry.Grid', {
     extend: 'Ext.grid.Panel',
     
-    requires: ['ToB.Registry.Store'],
+    requires: ['ToB.registry.Store'],
     
-    store: Ext.create('ToB.Registry.Store'),
+    store: Ext.create('ToB.registry.Store'),
     
     columns: [
         {

@@ -1,7 +1,7 @@
 Ext.application({
     requires: [
         'Ext.container.Viewport',
-        'ToB.Registry.Panel'
+        'ToB.registry.Panel'
     ],
     
     name: 'ToB',
@@ -11,7 +11,7 @@ Ext.application({
     launch: function() {
         Ext.create('Ext.container.Viewport', {
             items: [
-                Ext.create('ToB.Registry.Panel', {
+                Ext.create('ToB.registry.Panel', {
                     layout: {
                         type: 'vbox',
                         align: 'stretch',

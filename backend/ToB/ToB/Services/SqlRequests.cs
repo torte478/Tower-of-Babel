@@ -19,7 +19,7 @@ namespace ToB.Services
             this.log = log;
         }
 
-        public IQueryable<T> Select<T>(Func<TContext, DbSet<T>> toTable, string sql) where T : class
+        public IQueryable<T> Read<T>(Func<TContext, DbSet<T>> toTable, string sql) where T : class
         {
             log.LogDebug(sql);
             
@@ -28,7 +28,7 @@ namespace ToB.Services
                 .FromSqlRaw(sql);
         }
 
-        public ISqlRequests<TContext> Change(string sql)
+        public ISqlRequests<TContext> Write(string sql)
         {
             log.LogDebug(sql);
             
