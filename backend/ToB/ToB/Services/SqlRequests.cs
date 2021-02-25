@@ -21,7 +21,7 @@ namespace ToB.Services
 
         public IQueryable<T> Read<T>(Func<TContext, DbSet<T>> toTable, string sql) where T : class
         {
-            log.LogDebug(sql);
+            log.LogDebug("{Sql}", sql);
             
             return context
                 ._(toTable)
