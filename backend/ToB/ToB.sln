@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.PriorityToDo", "ToB.Pri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.Common", "ToB.Common\ToB.Common.csproj", "{29611660-521B-4B1E-AC16-93F18E1937B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.PriorityToDo.Tests", "ToB.PriorityToDo.Tests\ToB.PriorityToDo.Tests.csproj", "{C92A5BD3-8F45-4609-9142-B200293AAB84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{29611660-521B-4B1E-AC16-93F18E1937B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29611660-521B-4B1E-AC16-93F18E1937B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29611660-521B-4B1E-AC16-93F18E1937B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92A5BD3-8F45-4609-9142-B200293AAB84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92A5BD3-8F45-4609-9142-B200293AAB84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92A5BD3-8F45-4609-9142-B200293AAB84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92A5BD3-8F45-4609-9142-B200293AAB84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
