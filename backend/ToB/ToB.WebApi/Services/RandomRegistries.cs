@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using ToB.DB;
-using ToB.Interfaces;
+using ToB.WebApi.DB;
+using ToB.WebApi.Interfaces;
 
-namespace ToB.Services
+namespace ToB.WebApi.Services
 {
     public sealed class RandomRegistries : IRandomRegistries
     {

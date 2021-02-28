@@ -1,8 +1,7 @@
 ﻿using System;
+using ToB.WebApi.Interfaces;
 
-using ToB.Interfaces;
-
-namespace ToB.Services
+namespace ToB.WebApi.Services
 {
     public sealed class Randomizer : IRandomizer
     {

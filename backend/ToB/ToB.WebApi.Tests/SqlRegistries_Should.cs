@@ -2,13 +2,12 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-using FakeItEasy;
 using NUnit.Framework;
 
-using ToB.DB;
-using ToB.Interfaces;
+using ToB.WebApi.DB;
+using ToB.WebApi.Interfaces;
 
-namespace ToB.Services.Tests
+namespace ToB.WebApi.Services.Tests
 {
     [TestFixture]
     internal sealed class SqlRegistries_Should

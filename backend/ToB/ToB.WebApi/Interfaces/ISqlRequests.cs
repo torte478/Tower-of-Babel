@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace ToB.Interfaces
+namespace ToB.WebApi.Interfaces
 {
     public interface ISqlRequests<out TContext> where TContext : DbContext
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using ToB.DB;
+using ToB.WebApi.DB;
 
-namespace ToB.Interfaces
+namespace ToB.WebApi.Interfaces
 {
     public interface IRandomRegistries : IRegistries
     {

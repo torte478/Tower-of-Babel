@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ToB.WebApi.DB;
+using ToB.WebApi.Interfaces;
+using ToB.WebApi.Services;
 
-using ToB.DB;
-using ToB.Interfaces;
-using ToB.Services;
-
-namespace ToB
+namespace ToB.WebApi
 {
     public class Startup
     {

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToB", "ToB\ToB.csproj", "{4F3CBC3D-5901-4245-94DA-6E3F6B308E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToB.WebApi", "ToB.WebApi\ToB.WebApi.csproj", "{4F3CBC3D-5901-4245-94DA-6E3F6B308E72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.Tests", "ToB.Tests\ToB.Tests.csproj", "{48F671B4-748E-40F5-AC64-BD7EDC0FFC52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.WebApi.Tests", "ToB.WebApi.Tests\ToB.WebApi.Tests.csproj", "{48F671B4-748E-40F5-AC64-BD7EDC0FFC52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToB.PriorityToDo", "ToB.PriorityToDo\ToB.PriorityToDo.csproj", "{118BD9DB-1663-4482-A0E9-77B572052CE8}"
 EndProject

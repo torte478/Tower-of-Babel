@@ -3,7 +3,7 @@ using System;
 using FakeItEasy;
 using NUnit.Framework;
 
-namespace ToB.Services.Tests
+namespace ToB.WebApi.Services.Tests
 {
     [TestFixture]
     internal sealed  class Randomizer_Should

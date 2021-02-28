@@ -1,4 +1,4 @@
-﻿namespace ToB.Interfaces
+﻿namespace ToB.WebApi.Interfaces
 {
     public interface IRandomizer
     {

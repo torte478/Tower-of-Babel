@@ -1,4 +1,4 @@
-﻿namespace ToB.DTO
+﻿namespace ToB.WebApi.DTO
 {
     public class RegistryDto //TODO : to c# 9
     {

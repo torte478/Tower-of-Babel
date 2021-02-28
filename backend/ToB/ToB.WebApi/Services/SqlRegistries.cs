@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ToB.WebApi.DB;
+using ToB.WebApi.Interfaces;
 
-using ToB.DB;
-using ToB.Interfaces;
-
-namespace ToB.Services
+namespace ToB.WebApi.Services
 {
     public sealed class SqlRegistries : IRegistries
     {

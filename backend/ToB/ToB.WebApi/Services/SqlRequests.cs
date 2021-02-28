@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ToB.Common.Extensions;
-using ToB.Interfaces;
+using ToB.WebApi.Interfaces;
 
-namespace ToB.Services
+namespace ToB.WebApi.Services
 {
     public sealed class SqlRequests<TContext> : ISqlRequests<TContext> where TContext : DbContext
     {

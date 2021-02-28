@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ToB.DB
+namespace ToB.WebApi.DB
 {
     public partial class Registry
     {

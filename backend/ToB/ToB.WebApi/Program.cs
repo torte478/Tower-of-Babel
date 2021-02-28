@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly: InternalsVisibleTo("ToB.Tests")]
+[assembly: InternalsVisibleTo("ToB.WebApi.Tests")]
 
-namespace ToB
+namespace ToB.WebApi
 {
     public class Program
     {

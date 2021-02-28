@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ToB.DB;
-using ToB.Interfaces;
+using ToB.WebApi.DB;
+using ToB.WebApi.Interfaces;
 
-namespace ToB.Services
+namespace ToB.WebApi.Services
 {
     public sealed class EntityRegistries : IRegistries
     {

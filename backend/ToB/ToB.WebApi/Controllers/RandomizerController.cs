@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using ToB.WebApi.DTO;
+using ToB.WebApi.Interfaces;
 
-using ToB.Interfaces;
-using ToB.DTO;
-
-namespace ToB.Controllers
+namespace ToB.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

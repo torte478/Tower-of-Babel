@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>9</LangVersion>
+
+    <RootNamespace>ToB.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ToB\ToB.csproj" />
+    <ProjectReference Include="..\ToB.WebApi\ToB.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

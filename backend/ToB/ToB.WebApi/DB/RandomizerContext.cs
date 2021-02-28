@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace ToB.DB
+namespace ToB.WebApi.DB
 {
     public partial class RandomizerContext : DbContext
     {
