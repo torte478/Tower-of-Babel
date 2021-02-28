@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ToB.Common\ToB.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="RBT" />
+    </ItemGroup>
+
 </Project>

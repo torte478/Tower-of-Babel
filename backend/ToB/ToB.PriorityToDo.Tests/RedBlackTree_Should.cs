@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+
+using NUnit.Framework;
+using ToB.PriorityToDo.RBT;
 
 namespace ToB.PriorityToDo.Tests
 {
@@ -14,20 +17,12 @@ namespace ToB.PriorityToDo.Tests
         }
 
         [Test]
-        public void RotateTree_OnTwoRedNodes()
-        {
-            tree.Add(1).Add(2).Add(3);
-            
-            Assert.That(tree.Root.Left, Is.Not.EqualTo(RedBlackTree<int>.Nil));
-        }
-
-        [Test]
         public void ProvideOrder_AfterAdding()
         {
             foreach (var x in new[] {5, 4, 3, 2, 1})
                 tree.Add(x);
 
-            Assert.That(tree.ToOrdered(), Is.EquivalentTo(new[] {1, 2, 3, 4, 5}));
+            Assert.That(tree.ToList(), Is.EquivalentTo(new[] {1, 2, 3, 4, 5}));
         }
 
         [Test]
@@ -39,7 +34,7 @@ namespace ToB.PriorityToDo.Tests
             foreach (var x in new[] {4, 2, 3})
                 tree.Remove(x);
 
-            Assert.That(tree.ToOrdered(), Is.EquivalentTo(new[] {1, 5}));
+            Assert.That(tree.ToList(), Is.EquivalentTo(new[] {1, 5}));
         }
     }
 }

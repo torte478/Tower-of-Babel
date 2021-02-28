@@ -8,5 +8,15 @@ namespace ToB.Common.Extensions
         {
             return f(x);
         }
+
+        public static void _<T>(this T x, Action<T> p)
+        {
+            p(x);
+        }
+
+        public static void _<TFirst, TSecond>(this TFirst x, Action<TFirst, TSecond> p, TSecond y)
+        {
+            p(x, y);
+        }
     }
 }
