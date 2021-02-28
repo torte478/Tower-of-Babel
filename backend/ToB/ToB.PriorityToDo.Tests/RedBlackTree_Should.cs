@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 
 using NUnit.Framework;
-using ToB.PriorityToDo.RBT;
 
-namespace ToB.PriorityToDo.Tests
+namespace ToB.PriorityToDo.RBT.Tests
 {
     [TestFixture]
     internal sealed class RedBlackTree_Should

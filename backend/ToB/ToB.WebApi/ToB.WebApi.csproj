@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToB.Common\ToB.Common.csproj" />
+    <ProjectReference Include="..\ToB.PriorityToDo\ToB.PriorityToDo.csproj" />
   </ItemGroup>
   
 </Project>
