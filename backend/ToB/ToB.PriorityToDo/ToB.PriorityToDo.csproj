@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>ToB.PriorityToDo</AssemblyName>
+        <RootNamespace>ToB.PriorityToDo</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ToB.Common\ToB.Common.csproj" />
+    </ItemGroup>
+
+</Project>

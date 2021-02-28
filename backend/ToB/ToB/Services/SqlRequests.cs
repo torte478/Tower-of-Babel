@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using ToB.Extensions;
+using ToB.Common.Extensions;
 using ToB.Interfaces;
 
 namespace ToB.Services

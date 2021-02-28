@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ToB.Extensions
+namespace ToB.Common.Extensions
 {
     public static class FuncExtensions
     {
