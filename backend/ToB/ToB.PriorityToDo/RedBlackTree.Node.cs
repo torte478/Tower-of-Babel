@@ -2,25 +2,25 @@
 {
     public sealed partial class RedBlackTree<T>
     {
-        private sealed class Node
+        public sealed class Node
         {
             private bool isBlack;
             
-            public T Value { get; }
-            public Node Parent { get; set; }
-            public Node Left { get; set; }
-            public Node Right { get; set; }
+            public T Value { get; internal set; }
+            public Node Parent { get; internal set; }
+            public Node Left { get; internal set; }
+            public Node Right { get; internal set; }
 
             public bool Black
             {
                 get => isBlack;
-                set => isBlack = this == Nil || value;
+                internal set => isBlack = this == Nil || value;
             }
 
             public bool Red
             {
                 get => !isBlack;
-                set => isBlack = this == Nil || value;
+                internal set => isBlack = this == Nil || !value;
             }
 
             public Node Grandparent => Parent.Parent;
@@ -35,12 +35,12 @@
             public bool IsLeftChild => Parent != Nil && Parent.Left == this;
             public bool IsRightChild => Parent != Nil && Parent.Right == this;
 
-            public Node(bool black)
+            internal Node(bool black)
             {
                 Black = black;
             }
 
-            public Node(T value, Node parent, bool black = false) : this(black)
+            internal Node(T value, Node parent, bool black = false) : this(black)
             {
                 Value = value;
                 Parent = parent;

@@ -7,9 +7,9 @@ namespace ToB.PriorityToDo
 {
     public sealed partial class RedBlackTree<T> where T : IComparable<T>
     {
-        private static readonly Node Nil;
+        public static Node Nil { get; private set; }
 
-        private Node root;
+        public Node Root { get; private set; }
 
         static RedBlackTree()
         {
@@ -21,28 +21,183 @@ namespace ToB.PriorityToDo
 
         public RedBlackTree()
         {
-            root = Nil;
+            Root = Nil;
         }
         
         public IEnumerable<T> ToOrdered()
         {
-            return EnumerateFrom(root);
+            return EnumerateFrom(Root);
         }
 
         public RedBlackTree<T> Add(T value)
         {
             var node = new Node(value, Nil);
-            if (root == Nil)
+            if (Root == Nil)
             {
-                root = node;
+                Root = node;
+                Root.Black = true;
             }
             else
             {
-                InsertToLeaf(root, node);
+                InsertToLeaf(Root, node);
                 RepairTree(node);   
             }
 
             return this;
+        }
+
+        public RedBlackTree<T> Remove(T value)
+        {
+            DeleteOneChild(Root, value);
+
+            return this;
+        }
+
+        private void DeleteOneChild(Node n, T value)
+        {
+            var diff = value.CompareTo(n.Value); 
+            if (diff < 0)
+            {
+                DeleteOneChild(n.Left, value);
+                return;
+            }
+            else if (diff > 0)
+            {
+                DeleteOneChild(n.Right, value);
+                return;
+            }
+            
+            if (n.Left != Nil && n.Right != Nil)
+            {
+                var successor = FindMin(n.Right);
+                n.Value = successor.Value;
+                DeleteOneChild(successor, successor.Value);
+            }
+            else if (n.Left != Nil)
+                ReplaceNodeInParent(n, n.Left);
+            else if (n.Right != Nil)
+                ReplaceNodeInParent(n, n.Right);
+            else
+                ReplaceNodeInParent(n, Nil);
+            
+            DeleteCase1(n);
+        }
+
+        private Node FindMin(Node node)
+        {
+            var current = node;
+            while (node.Left != Nil)
+                current = node.Left;
+            return current;
+        }
+
+        private void ReplaceNodeInParent(Node current, Node replaced)
+        {
+            if (current.Parent != Nil)
+            {
+                if (current.IsLeftChild)
+                    current.Parent.Left = replaced;
+                else
+                    current.Parent.Right = replaced;
+            }
+
+            if (replaced != Nil)
+                replaced.Parent = current.Parent;
+        }
+
+        private void DeleteCase1(Node n)
+        {
+            if (n.Parent != Nil)
+                DeleteCase2(n);
+        }
+
+        private void DeleteCase2(Node n)
+        {
+            var s = n.Sibling;
+
+            if (s.Red)
+            {
+                n.Parent.Red = true;
+                s.Black = true;
+                if (n.IsLeftChild)
+                    LeftRotate(n.Parent);
+                else
+                    RightRotate(n.Parent);
+            }
+
+            DeleteCase3(n);
+        }
+
+        private void DeleteCase3(Node n)
+        {
+            var s = n.Sibling;
+
+            if (n.Parent.Black && s.Black && s.Left.Black && s.Right.Black)
+            {
+                s.Red = true;
+                DeleteCase1(n.Parent);
+            }
+            else
+            {
+                DeleteCase4(n);
+            }
+        }
+
+        private void DeleteCase4(Node n)
+        {
+            var s = n.Sibling;
+
+            if (n.Parent.Red && s.Black && s.Left.Black && s.Right.Black)
+            {
+                s.Red = true;
+                n.Parent.Black = true;
+            }
+            else
+            {
+                DeleteCase5(n);
+            } 
+        }
+
+        private void DeleteCase5(Node n)
+        {
+            var s = n.Sibling;
+
+            if (s.Black)
+            {
+                if (n.IsLeftChild && s.Right.Black && s.Left.Red)
+                {
+                    s.Red = true;
+                    s.Left.Black = true;
+                    RightRotate(s);
+                }
+                else if (n.IsRightChild && s.Left.Black && s.Right.Red)
+                {
+                    s.Red = true;
+                    s.Right.Black = true;
+                    LeftRotate(s);
+                }
+            }
+
+            DeleteCase6(n);
+        }
+
+        private void DeleteCase6(Node n)
+        {
+            var s = n.Sibling;
+
+            s.Black = n.Parent.Black;
+            n.Parent.Black = true;
+
+            if (n.IsLeftChild)
+            {
+                s.Right.Black = true;
+                LeftRotate(n.Parent);
+            }
+            else
+            {
+                s.Left.Black = true;
+                RightRotate(n.Parent);
+            }
         }
 
         private void RepairTree(Node node)
@@ -146,8 +301,8 @@ namespace ToB.PriorityToDo
 
             nnew.Parent = p;
             
-            if (root.Parent != Nil)
-                root = root.Parent;
+            if (Root.Parent != Nil)
+                Root = Root.Parent;
         }
 
         private void LeftRotate(Node n)
@@ -172,8 +327,8 @@ namespace ToB.PriorityToDo
 
             nnew.Parent = p;
             
-            if (root.Parent != Nil)
-                root = root.Parent;
+            if (Root.Parent != Nil)
+                Root = Root.Parent;
         }
 
         private static IEnumerable<T> EnumerateFrom(Node node)
