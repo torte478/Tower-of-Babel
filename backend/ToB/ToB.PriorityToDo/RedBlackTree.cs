@@ -38,99 +38,90 @@ namespace ToB.PriorityToDo
             }
             else
             {
-                InsertRecurse(root, node);
-                InsertRepairTree(node);   
+                InsertToLeaf(root, node);
+                RepairTree(node);   
             }
 
             return this;
         }
 
-        private void InsertRepairTree(Node n)
+        private void RepairTree(Node node)
         {
-            if (n.Parent == Nil)
-                InsertCase1(n);
-            else if (n.Parent.Black)
-                InsertCase2(n);
-            else if (n.Uncle != Nil && n.Uncle.Red)
-                InsertCase3(n);
-            else
-                InsertCase4(n);
-        }
+            if (node.Parent == Nil)
+                node.Black = true;
 
-        private void InsertCase1(Node node)
-        {
-            node.Black = true;
-        }
-
-        private void InsertCase2(Node node)
-        {
+            if (node.Parent == Nil || node.Parent.Black) 
+                return;
             
+            if (node.Uncle != Nil && node.Uncle.Red)
+                RecolorUncle(node);
+            else
+                MakeRotate(node);
         }
 
-        private void InsertCase3(Node node)
+        private void RecolorUncle(Node node)
         {
             node.Parent.Black = true;
             node.Uncle.Black = true;
             node.Grandparent.Red = true;
-            InsertRepairTree(node.Grandparent);
+            RepairTree(node.Grandparent);
         }
 
-        private void InsertCase4(Node n)
+        private void MakeRotate(Node node)
         {
-            var p = n.Parent;
-            var g = n.Grandparent;
+            var parent = node.Parent;
 
-            if (n.IsRightChild && p.IsLeftChild)
+            if (node.IsRightChild && parent.IsLeftChild)
             {
-                LeftRotate(p);
-                n = n.Left;
+                LeftRotate(parent);
+                node = node.Left;
             }
-            else if (n.IsLeftChild && p.IsRightChild)
+            else if (node.IsLeftChild && parent.IsRightChild)
             {
-                RightRotate(p);
-                n = n.Right;
+                RightRotate(parent);
+                node = node.Right;
             }
 
-            p = n.Parent;
-            g = n.Grandparent;
+            parent = node.Parent;
+            var grandparent = node.Grandparent;
 
-            if (n.IsLeftChild)
-                RightRotate(g);
+            if (node.IsLeftChild)
+                RightRotate(grandparent);
             else
-                LeftRotate(g);
+                LeftRotate(grandparent);
             
-            p.Black = true;
-            g.Red = true;
+            parent.Black = true;
+            grandparent.Red = true;
         }
 
-        private void InsertRecurse(Node r, Node n)
+        private static void InsertToLeaf(Node current, Node added)
         {
-            if (r != Nil)
+            if (current != Nil)
             {
-                if (n.Value.CompareTo(r.Value) < 0)
+                if (added.Value.CompareTo(current.Value) < 0)
                 {
-                    if (r.Left != Nil)
+                    if (current.Left != Nil)
                     {
-                        InsertRecurse(r.Left, n);
+                        InsertToLeaf(current.Left, added);
                         return;
                     }
 
-                    r.Left = n;
+                    current.Left = added;
                 }
                 else
                 {
-                    if (r.Right != Nil)
+                    if (current.Right != Nil)
                     {
-                        InsertRecurse(r.Right, n);
+                        InsertToLeaf(current.Right, added);
                         return;
                     }
 
-                    r.Right = n;
+                    current.Right = added;
                 }
             }
 
-            n.Parent = r;
-            n.Red = true;
+            added.Parent = current;
+            added.Red = true;
         }
 
         private void RightRotate(Node n)
