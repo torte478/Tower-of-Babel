@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ToB.PriorityToDo;
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
@@ -32,6 +33,8 @@ namespace ToB.WebApi
                           .AllowAnyHeader());
             });
 
+            #region Randomizer
+            
             services.AddDbContext<RandomizerContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("RandomizerContext")));
             
@@ -42,6 +45,18 @@ namespace ToB.WebApi
             services.AddTransient<IRegistries, SqlRegistries>();
             
             services.AddTransient<IRandomRegistries, RandomRegistries>();
+            
+            #endregion
+
+            #region PriorityToDo
+
+            services.AddDbContext<ToB.PriorityToDo.DB.Context>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
+            
+            services.AddTransient<IPriorityToDoService, PriorityToDoService>();
+
+            #endregion
+
             
             services.AddControllers();
         }

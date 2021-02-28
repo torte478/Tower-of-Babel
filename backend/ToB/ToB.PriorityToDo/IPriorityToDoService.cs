@@ -9,7 +9,6 @@ namespace ToB.PriorityToDo
         bool UpdateProject(int id, string name);
         bool DeleteProject(int id);
 
-
         IEnumerable<(int id, string text)> ToPriorityList(int project);
         (bool added, int id) StartAdd(int project, string text);
         string NextForAdd(int project, int id);
