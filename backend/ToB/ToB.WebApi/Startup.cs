@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using ToB.PriorityToDo;
+using ToB.PriorityToDo.DB;
+
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
@@ -53,11 +56,14 @@ namespace ToB.WebApi
             services.AddDbContext<ToB.PriorityToDo.DB.Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
 
-            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IProjectService>(_ => new ProjectService(
+                _.GetRequiredService<Context>(),
+                1,
+                (projects, root) => new Trees(projects).Build(root)));
+            
             services.AddTransient<IObjectiveService, ObjectiveService>();
 
             #endregion
-
             
             services.AddControllers();
         }

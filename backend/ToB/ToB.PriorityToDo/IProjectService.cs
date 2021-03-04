@@ -2,9 +2,9 @@
 {
     public interface IProjectService
     {
-        int AddProject(int parent, string name);
-        ITree<(int id, string name)> ToProjects();
-        bool UpdateProject(int id, string name);
-        bool DeleteProject(int id);
+        int Create(int parent, string name);
+        ProjectTreeDto ToProjects();
+        bool Update(int id, string name);
+        bool Delete(int id);
     }
 }

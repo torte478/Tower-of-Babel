@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-
-using ToB.Common.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToB.PriorityToDo;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
@@ -22,45 +18,26 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         [Route("create")]
         public ActionResult<int> Create(int parentId, string name)
         {
-            return service.AddProject(parentId, name);
+            return service.Create(parentId, name);
         }
 
         [HttpGet]
-        public ActionResult<ProjectDto> Read()
+        public ActionResult<ProjectTreeDto> Read()
         {
-            return service
-                .ToProjects()
-                ._(ToProjectDtoProjection);
+            return service.ToProjects();
         }
 
         [HttpPost]
         [Route("update")]
         public ActionResult<bool> Update(int id, string name)
         {
-            return service.UpdateProject(id, name);
+            return service.Update(id, name);
         }
 
         [HttpDelete]
         public ActionResult<bool> Delete(int id)
         {
-            return service.DeleteProject(id);
-        }
-        
-        private static ProjectDto ToProjectDtoProjection(ITree<(int id, string name)> tree)
-        {
-            return new()
-            {
-                Id = tree.Item.id,
-                Name = tree.Item.name,
-                Children = tree.Children.Select(ToProjectDtoProjection).ToList()
-            };
-        }
-
-        public sealed class ProjectDto
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public List<ProjectDto> Children { get; set; }
+            return service.Delete(id);
         }
     }
 }
