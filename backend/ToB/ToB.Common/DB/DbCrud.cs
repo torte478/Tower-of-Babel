@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ToB.Common.DB
 {
-    public sealed class DbCrud<TContext, TValue> : ICrud<int, TValue> where TValue : class, IHaveId<int> where TContext : DbContext
+    public sealed class DbCrud<TContext, TValue> : ICrud<int, TValue> 
+        where TValue : class, IHaveId<int>, ICopyable<TValue>
+        where TContext : DbContext
     {
         private readonly TContext context;
         private readonly Func<TContext, DbSet<TValue>> getEntities;
@@ -42,7 +44,8 @@ namespace ToB.Common.DB
 
             if (exists)
             {
-                Entities.Update(item);
+                entity.Copy(item);
+                Entities.Update(entity);
                 context.SaveChanges();
             }
 

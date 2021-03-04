@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ToB.Common;
 using ToB.Common.DB;
 using ToB.Common.Extensions;
 using ToB.PriorityToDo.DB;
@@ -42,13 +41,11 @@ namespace ToB.PriorityToDo
 
         public bool Update(int id, string name)
         {
-            var project = crud.Read(id);
-
-            var none = project == null;
-            if (none) return false;
-            
-            project.Name = name;
-            return crud.Update(project);
+            return crud.Update(new Project
+            {
+                Id = id,
+                Name = name,
+            });
         }
 
         public bool Delete(int id)
