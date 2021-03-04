@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using ToB.PriorityToDo;
+using ToB.PriorityToDo.Projects;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
 {
@@ -8,9 +9,9 @@ namespace ToB.WebApi.Controllers.PriorityToDo
     [ApiController]
     public sealed class ProjectsController : ControllerBase
     {
-        private readonly IProjectService service;
+        private readonly IService service;
 
-        public ProjectsController(IProjectService service)
+        public ProjectsController(IService service)
         {
             this.service = service;
         }
@@ -23,7 +24,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         }
 
         [HttpGet]
-        public ActionResult<ProjectTreeDto> Read()
+        public ActionResult<TreeDto> Read()
         {
             return service.ToProjects();
         }

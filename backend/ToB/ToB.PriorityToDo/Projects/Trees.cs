@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using ToB.Common.Extensions;
 using ToB.PriorityToDo.DB;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Projects
 {
     public sealed class Trees
     {
@@ -15,20 +14,20 @@ namespace ToB.PriorityToDo
             this.projects = projects;
         }
 
-        public ProjectTreeDto Build(int root)
+        public TreeDto Build(int root)
         {
             return projects
                 .Single(_ => _.Id == root)
                 ._(Build);
         }
 
-        private ProjectTreeDto Build(Project node)
+        private TreeDto Build(Project node)
         {
             return projects
                 .Where(_ => _.Parent == node.Id)
                 .Select(Build)
                 .ToList()
-                ._(_ => new ProjectTreeDto
+                ._(_ => new TreeDto
                 {
                     Id = node.Id,
                     Name = node.Name,

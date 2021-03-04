@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ToB.Common.DB;
 using ToB.Common.Extensions;
 using ToB.PriorityToDo.DB;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Projects
 {
-    public sealed class ProjectService : IProjectService
+    public sealed class Service : IService
     {
         private readonly ICrud<int, Project> crud;
         private readonly int root;
-        private readonly Func<List<Project>, int, ProjectTreeDto> buildTree;
+        private readonly Func<List<Project>, int, TreeDto> buildTree;
 
-        public ProjectService(ICrud<int, Project> crud, int root, Func<List<Project>, int, ProjectTreeDto> buildTree)
+        public Service(ICrud<int, Project> crud, int root, Func<List<Project>, int, TreeDto> buildTree)
         {
             this.crud = crud;
             this.root = root;
@@ -32,7 +31,7 @@ namespace ToB.PriorityToDo
             return added;
         }
 
-        public ProjectTreeDto ToProjects()
+        public TreeDto ToProjects()
         {
             return crud.Read()
                 .ToList()

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Objectives
 {
     public class Node : IComparable<Node>
     {

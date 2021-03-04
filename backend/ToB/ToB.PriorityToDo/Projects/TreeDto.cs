@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Projects
 {
-    public sealed class ProjectTreeDto
+    public sealed class TreeDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<ProjectTreeDto> Children { get; set; }
+        public List<TreeDto> Children { get; set; }
     }
 }

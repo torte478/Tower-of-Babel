@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="RBT" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3">
         <PrivateAssets>all</PrivateAssets>

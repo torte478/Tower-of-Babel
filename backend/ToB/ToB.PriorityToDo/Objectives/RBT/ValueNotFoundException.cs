@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ToB.PriorityToDo.RBT
+namespace ToB.PriorityToDo.Objectives.RBT
 {
     [Serializable]
     public class ValueNotFoundException : Exception, ISerializable

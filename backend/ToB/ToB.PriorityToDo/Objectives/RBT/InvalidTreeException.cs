@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ToB.PriorityToDo.RBT
+namespace ToB.PriorityToDo.Objectives.RBT
 {
     [Serializable]
     public class InvalidTreeException : Exception

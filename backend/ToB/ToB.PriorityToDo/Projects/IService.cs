@@ -1,9 +1,9 @@
-﻿namespace ToB.PriorityToDo
+﻿namespace ToB.PriorityToDo.Projects
 {
-    public interface IProjectService
+    public interface IService
     {
         int Create(int parent, string name);
-        ProjectTreeDto ToProjects();
+        TreeDto ToProjects();
         bool Update(int id, string name);
         bool Delete(int id);
     }

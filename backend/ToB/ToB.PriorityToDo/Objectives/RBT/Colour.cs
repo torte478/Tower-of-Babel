@@ -1,4 +1,4 @@
-﻿namespace ToB.PriorityToDo.RBT
+﻿namespace ToB.PriorityToDo.Objectives.RBT
 {
     internal enum Colour : byte
     {

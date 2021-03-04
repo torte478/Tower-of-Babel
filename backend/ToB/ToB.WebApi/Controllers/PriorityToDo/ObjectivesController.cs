@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ToB.Common.Extensions;
 using ToB.PriorityToDo;
+using ToB.PriorityToDo.Objectives;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
 {

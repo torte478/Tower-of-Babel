@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using ToB.Common.DB;
 using ToB.Common.Extensions;
 using ToB.PriorityToDo.DB;
-using ToB.PriorityToDo.RBT;
+using ToB.PriorityToDo.Objectives.RBT;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Objectives
 {
     public sealed class ObjectiveService : IObjectiveService
     {

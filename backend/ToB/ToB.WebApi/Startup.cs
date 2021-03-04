@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using ToB.Common;
 using ToB.Common.DB;
-using ToB.PriorityToDo;
 using ToB.PriorityToDo.DB;
+using ToB.PriorityToDo.Objectives;
+using ToB.PriorityToDo.Projects;
 
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
@@ -62,7 +62,7 @@ namespace ToB.WebApi
                 _.GetRequiredService<Context>(),
                 _ => _.Projects));
 
-            services.AddTransient<IProjectService>(_ => new ProjectService(
+            services.AddTransient<IService>(_ => new Service(
                 _.GetRequiredService<ICrud<int, Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));

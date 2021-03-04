@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ToB.PriorityToDo.RBT
+namespace ToB.PriorityToDo.Objectives.RBT
 {
     public interface IBinarySearchTree<T> where T : IComparable<T>
     {

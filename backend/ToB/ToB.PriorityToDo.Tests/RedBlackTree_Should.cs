@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using NUnit.Framework;
+using ToB.PriorityToDo.Objectives.RBT;
 
 namespace ToB.PriorityToDo.RBT.Tests
 {

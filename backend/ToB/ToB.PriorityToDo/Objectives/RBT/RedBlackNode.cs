@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ToB.PriorityToDo.RBT
+namespace ToB.PriorityToDo.Objectives.RBT
 {
     internal sealed class RedBlackNode<T>
     {

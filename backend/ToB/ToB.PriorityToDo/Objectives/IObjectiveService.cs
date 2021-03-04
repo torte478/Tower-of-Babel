@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ToB.PriorityToDo
+namespace ToB.PriorityToDo.Objectives
 {
     public interface IObjectiveService
     {
