@@ -45,7 +45,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         public ActionResult<AddDto> ContinueAdd(int projectId, int id, bool greater)
         {
             var result = service
-                .ContinueAdd(projectId, id, greater)
+                .ContinueAdd(id, greater)
                 ._(_ => new AddDto
                 {
                     Added = _.added,
@@ -58,16 +58,16 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         [HttpDelete]
         public ActionResult<List<ObjectiveDto>> Complete(int projectId, int id)
         {
-            service.Remove(projectId, id);
+            service.Remove(id);
 
             return new ActionResult<List<ObjectiveDto>>(GetAllProjectItems(projectId));
         }
 
         [HttpPost]
         [Route("update")]
-        public ActionResult<bool> Change(int projectId, int id, string text)
+        public ActionResult<bool> Change(int id, string text)
         {
-            return service.Update(projectId, id, text);
+            return service.Update(id, text);
         }
 
         [HttpPost]
@@ -80,7 +80,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         private ActionResult<AddDto> FinishOrNext(int projectId, AddDto result)
         {
             if (result.Added)
-                result.Objectives = GetAllProjectItems(projectId);
+                result.Items = GetAllProjectItems(projectId);
             else
                 result.Next = service.NextForAdd(projectId, result.Id);
 
@@ -110,7 +110,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
             public bool Added { get; set; }
             public int Id { get; set; }
             public string Next { get; set; }
-            public IEnumerable<ObjectiveDto> Objectives { get; set; }
+            public IEnumerable<ObjectiveDto> Items { get; set; }
         }
     }
 }

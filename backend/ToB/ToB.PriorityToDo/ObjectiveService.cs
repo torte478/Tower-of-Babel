@@ -19,17 +19,17 @@ namespace ToB.PriorityToDo
             throw new System.NotImplementedException();
         }
 
-        public (bool added, string next) ContinueAdd(int projectId, int id, bool greater)
+        public (bool added, string next) ContinueAdd(int id, bool greater)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Remove(int project, int id)
+        public bool Remove(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Update(int project, int id, string text)
+        public bool Update(int id, string text)
         {
             throw new System.NotImplementedException();
         }

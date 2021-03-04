@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using ToB.Common;
+using ToB.Common.DB;
 using ToB.PriorityToDo;
 using ToB.PriorityToDo.DB;
 
@@ -53,11 +55,15 @@ namespace ToB.WebApi
 
             #region PriorityToDo
 
-            services.AddDbContext<ToB.PriorityToDo.DB.Context>(options =>
+            services.AddDbContext<Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
 
-            services.AddTransient<IProjectService>(_ => new ProjectService(
+            services.AddTransient<ICrud<int, Project>>(_ => new DbCrud<Context, Project>(
                 _.GetRequiredService<Context>(),
+                _ => _.Projects));
+
+            services.AddTransient<IProjectService>(_ => new ProjectService(
+                _.GetRequiredService<ICrud<int, Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
             

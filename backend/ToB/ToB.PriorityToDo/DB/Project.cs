@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using ToB.Common;
+using ToB.Common.DB;
 
 #nullable disable
 
 namespace ToB.PriorityToDo.DB
 {
-    public partial class Project
+    public partial class Project : IHaveId<int>
     {
         public Project()
         {
