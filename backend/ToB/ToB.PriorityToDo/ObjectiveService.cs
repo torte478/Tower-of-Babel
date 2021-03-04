@@ -2,28 +2,8 @@
 
 namespace ToB.PriorityToDo
 {
-    public sealed class PriorityToDoService : IPriorityToDoService
+    public sealed class ObjectiveService : IObjectiveService
     {
-        public int AddProject(int parent, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ITree<(int id, string name)> ToProjects()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool UpdateProject(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool DeleteProject(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public IEnumerable<(int id, string text)> ToPriorityList(int project)
         {
             throw new System.NotImplementedException();

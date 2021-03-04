@@ -52,8 +52,9 @@ namespace ToB.WebApi
 
             services.AddDbContext<ToB.PriorityToDo.DB.Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
-            
-            services.AddTransient<IPriorityToDoService, PriorityToDoService>();
+
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IObjectiveService, ObjectiveService>();
 
             #endregion
 
