@@ -1,4 +1,4 @@
-﻿namespace ToB.PriorityToDo.Objectives
+﻿namespace ToB.Common
 {
     public sealed class IntSequence
     {

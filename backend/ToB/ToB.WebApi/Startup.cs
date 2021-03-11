@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using ToB.Common;
 using ToB.Common.DB;
 using ToB.PriorityToDo.DB;
 using ToB.PriorityToDo.Objectives;
@@ -64,6 +64,10 @@ namespace ToB.WebApi
             services.AddTransient<ICrud<int, PriorityToDo.DB.Project>>(_ => new DbCrud<Context, PriorityToDo.DB.Project>(
                 _.GetRequiredService<Context>(),
                 _ => _.Projects));
+            
+            services.AddTransient<ICrud<int, Objective>>(_ => new DbCrud<Context, Objective>(
+                _.GetRequiredService<Context>(),
+                _ => _.Objectives));
 
             services.AddTransient<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
                 _.GetRequiredService<ICrud<int, PriorityToDo.DB.Project>>(),
@@ -73,7 +77,7 @@ namespace ToB.WebApi
             services.AddTransient<IMeasure>(_ => new Measure(1024));
 
             services.AddTransient<IBalancedTree<Objective>>(_ => new BalancedTree<Objective>(
-                _ => throw new NotImplementedException())); //TODO
+                _ => new Node<Objective>(_)));
             
             services.AddTransient<IProjects>(_ => new Projects(
                 _.GetRequiredService<Context>(),

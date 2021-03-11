@@ -21,7 +21,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         }
 
         [HttpGet]
-        public ActionResult<List<ObjectiveDto>> GetAll(int projectId)
+        public ActionResult<List<ObjectiveDto>> List(int projectId)
         {
             return new(GetAllProjectItems(projectId));
         }
