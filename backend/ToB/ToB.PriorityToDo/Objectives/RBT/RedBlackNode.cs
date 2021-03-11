@@ -2,7 +2,7 @@
 
 namespace ToB.PriorityToDo.Objectives.RBT
 {
-    internal sealed class RedBlackNode<T>
+    public sealed class RedBlackNode<T>
     {
         internal RedBlackNode(T value)
         {

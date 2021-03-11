@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using ToB.PriorityToDo.Objectives.RBT;
+﻿using System.Collections.Generic;
 
 namespace ToB.PriorityToDo.Objectives
 {
-    public interface IBalancedTree<T>// : IBinarySearchTree<T> where T : IComparable<T>
+    public interface IBalancedTree<T>
     {
         int Count { get; }
         T Root { get; }

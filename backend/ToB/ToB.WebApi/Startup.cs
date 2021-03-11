@@ -71,14 +71,17 @@ namespace ToB.WebApi
                 (projects, root) => new Trees(projects).Build(root)));
 
             services.AddTransient<IMeasure>(_ => new Measure(1024));
+
+            services.AddTransient<IBalancedTree<Objective>>(_ => new BalancedTree<Objective>(
+                _ => throw new NotImplementedException())); //TODO
             
             services.AddTransient<IProjects>(_ => new Projects(
                 _.GetRequiredService<Context>(),
                 id => Project.Create(
-                    id,
-                    _.GetRequiredService<IMeasure>(),
-                    _.GetRequiredService<ICrud<int, Objective>>(),
-                    () => throw new NotImplementedException()))); //TODO
+                    project: id,
+                    measure: _.GetRequiredService<IMeasure>(),
+                    storage: _.GetRequiredService<ICrud<int, Objective>>(),
+                    createTree: _.GetRequiredService<IBalancedTree<Objective>>)));
             
             services.AddTransient<IService>(_ => new Service(
                 _.GetRequiredService<IProjects>(),
