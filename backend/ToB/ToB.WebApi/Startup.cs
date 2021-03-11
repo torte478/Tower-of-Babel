@@ -69,7 +69,9 @@ namespace ToB.WebApi
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
             
-            services.AddTransient<IService, Service>();
+            services.AddTransient<IService>(_ => new Service(
+                _.GetRequiredService<IProjects>(),
+                new IntSequence().Next));
 
             #endregion
             

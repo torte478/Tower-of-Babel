@@ -1,57 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ToB.Common.DB;
-using ToB.Common.Extensions;
-using ToB.PriorityToDo.DB;
-using ToB.PriorityToDo.Objectives.RBT;
 
 namespace ToB.PriorityToDo.Objectives
 {
     public sealed class Service : IService
     {
-        private readonly Context context;
-        private readonly IBinarySearchTree<Node> tree;
-
-        private ICrud<int, Objective> Objectives => context.AsCrud(_ => _.Objectives);
+        private readonly IProjects projects;
+        private readonly Func<int> getNextId;
         
+        private readonly Dictionary<int, (int project, int node)> toAdd = new();
+
+        public Service(IProjects projects, Func<int> getNextId)
+        {
+            this.projects = projects;
+            this.getNextId = getNextId;
+        }
+
         public IEnumerable<(int id, string text)> ToPriorityList(int project)
         {
-            var ids = tree.InOrderIterator
-                .Where(_ => _.Project == project)
-                .Select(_ => _.Id)
-                .ToHashSet();
-
-            return context.Objectives
-                .Where(_ => ids.Contains(_.Id))
-                .Select(_ => new { _.Id, _.Text })
-                .ToList()
-                .Select(_ => (_.Id, _.Text));
+            return projects.Contains(project)
+                ? projects[project].ToPriorityList()
+                : Enumerable.Empty<(int, string)>();
         }
 
         public (bool added, int id) StartAdd(int project, string text)
         {
-            throw new System.NotImplementedException();
+            var result =  projects[project].StartAdd(text);
+            
+            if (!result.added)
+                toAdd.Add(getNextId(), (project, result.node));
+
+            return result;
         }
 
-        public string NextForAdd(int project, int id)
+        public string NextForAdd(int id)
         {
-            throw new System.NotImplementedException();
+            var added = toAdd[id];
+            return projects[added.project].NextForAdd(added.node);
         }
 
         public (bool added, string next) ContinueAdd(int id, bool greater)
         {
-            throw new System.NotImplementedException();
+            var added = toAdd[id];
+            var result = projects[added.project].ContinueAdd(added.node, greater);
+
+            if (result.added)
+            {
+                toAdd.Remove(id);
+                return (true, string.Empty);
+            }
+
+            toAdd[id] = (added.project, result.node);
+            return (false, NextForAdd(id));
         }
 
-        public bool Remove(int id)
+        public bool Remove(int project, int id)
         {
-            throw new NotImplementedException();
+            return projects.Contains(project) && projects[project].Remove(id);
         }
 
-        public bool Update(int id, string text)
+        public bool Update(int project, int id, string text)
         {
-            throw new NotImplementedException();
+            return projects.Contains(project) && projects[project].Update(id, text);
         }
     }
 }

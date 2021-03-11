@@ -59,16 +59,16 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         [HttpDelete]
         public ActionResult<List<ObjectiveDto>> Complete(int projectId, int id)
         {
-            service.Remove(id);
+            service.Remove(projectId, id);
 
             return new ActionResult<List<ObjectiveDto>>(GetAllProjectItems(projectId));
         }
 
         [HttpPost]
         [Route("update")]
-        public ActionResult<bool> Change(int id, string text)
+        public ActionResult<bool> Change(int projectId, int id, string text)
         {
-            return service.Update(id, text);
+            return service.Update(projectId, id, text);
         }
 
         [HttpPost]
@@ -83,7 +83,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
             if (result.Added)
                 result.Items = GetAllProjectItems(projectId);
             else
-                result.Next = service.NextForAdd(projectId, result.Id);
+                result.Next = service.NextForAdd(result.Id);
 
             return result;
         }
