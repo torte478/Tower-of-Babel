@@ -14,6 +14,7 @@ using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
 using IService = ToB.PriorityToDo.Objectives.IService;
+using Project = ToB.PriorityToDo.Objectives.Project;
 using Service = ToB.PriorityToDo.Objectives.Service;
 
 namespace ToB.WebApi
@@ -60,14 +61,22 @@ namespace ToB.WebApi
             services.AddDbContext<Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
 
-            services.AddTransient<ICrud<int, Project>>(_ => new DbCrud<Context, Project>(
+            services.AddTransient<ICrud<int, PriorityToDo.DB.Project>>(_ => new DbCrud<Context, PriorityToDo.DB.Project>(
                 _.GetRequiredService<Context>(),
                 _ => _.Projects));
 
             services.AddTransient<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
-                _.GetRequiredService<ICrud<int, Project>>(),
+                _.GetRequiredService<ICrud<int, PriorityToDo.DB.Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
+
+            services.AddTransient<IProjects>(_ => new Projects(
+                _.GetRequiredService<Context>(),
+                id => Project.Create(
+                    id,
+                    _.GetRequiredService<IMeasure>(),
+                    _.GetRequiredService<ICrud<int, Objective>>(),
+                    () => throw new NotImplementedException()))); //TODO
             
             services.AddTransient<IService>(_ => new Service(
                 _.GetRequiredService<IProjects>(),

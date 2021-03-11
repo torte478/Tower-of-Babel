@@ -9,7 +9,7 @@ namespace ToB.PriorityToDo.Objectives
         private readonly IProjects projects;
         private readonly Func<int> getNextId;
         
-        private readonly Dictionary<int, (int project, int node)> toAdd = new();
+        private readonly Dictionary<int, (int project, int node, string text)> toAdd = new();
 
         public Service(IProjects projects, Func<int> getNextId)
         {
@@ -29,7 +29,7 @@ namespace ToB.PriorityToDo.Objectives
             var result =  projects[project].StartAdd(text);
             
             if (!result.added)
-                toAdd.Add(getNextId(), (project, result.node));
+                toAdd.Add(getNextId(), (project, result.node, text));
 
             return result;
         }
@@ -43,7 +43,7 @@ namespace ToB.PriorityToDo.Objectives
         public (bool added, string next) ContinueAdd(int id, bool greater)
         {
             var added = toAdd[id];
-            var result = projects[added.project].ContinueAdd(added.node, greater);
+            var result = projects[added.project].ContinueAdd(added.node, greater, added.text);
 
             if (result.added)
             {
@@ -51,7 +51,7 @@ namespace ToB.PriorityToDo.Objectives
                 return (true, string.Empty);
             }
 
-            toAdd[id] = (added.project, result.node);
+            toAdd[id] = (added.project, result.node, added.text);
             return (false, NextForAdd(id));
         }
 

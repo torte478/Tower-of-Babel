@@ -4,6 +4,6 @@
     {
         private int value = 0;
 
-        public int Next() => value++;
+        public int Next() => ++value;
     }
 }

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
 
+using System;
 using ToB.Common.DB;
-
-#nullable disable
 
 namespace ToB.PriorityToDo.DB
 {
-    public partial class Objective : IHaveId<int>, ICopyable<Objective>
+    public partial class Objective : IHaveId<int>, ICopyable<Objective>, IComparable<Objective>
     {
         public int Id { get; set; }
         public int Value { get; set; }
@@ -25,6 +24,17 @@ namespace ToB.PriorityToDo.DB
 
             if (other.Text != default)
                 Text = other.Text;
+
+            if (other.Project != default)
+                Project = other.Project;
+        }
+        
+        public int CompareTo(Objective? other)
+        {
+            if (other == null)
+                return -1;
+
+            return Value.CompareTo(other.Value);
         }
     }
 }
