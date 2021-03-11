@@ -16,7 +16,6 @@ namespace ToB.PriorityToDo.DB
         }
 
         public virtual DbSet<Objective> Objectives { get; set; }
-        public virtual DbSet<ObjectiveProject> ObjectiveProjects { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,35 +28,20 @@ namespace ToB.PriorityToDo.DB
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Project).HasColumnName("project");
+
                 entity.Property(e => e.Text)
                     .IsRequired()
                     .HasMaxLength(128)
                     .HasColumnName("text");
 
                 entity.Property(e => e.Value).HasColumnName("value");
-            });
-
-            modelBuilder.Entity<ObjectiveProject>(entity =>
-            {
-                entity.ToTable("objective_project");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Objective).HasColumnName("objective");
-
-                entity.Property(e => e.Project).HasColumnName("project");
-
-                entity.HasOne(d => d.ObjectiveNavigation)
-                    .WithMany(p => p.ObjectiveProjects)
-                    .HasForeignKey(d => d.Objective)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("foreign_objective");
 
                 entity.HasOne(d => d.ProjectNavigation)
-                    .WithMany(p => p.ObjectiveProjects)
+                    .WithMany(p => p.Objectives)
                     .HasForeignKey(d => d.Project)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("foreign_projcet");
+                    .OnDelete(DeleteBehavior.ClientSetNull) //TODO
+                    .HasConstraintName("objective_fk");
             });
 
             modelBuilder.Entity<Project>(entity =>

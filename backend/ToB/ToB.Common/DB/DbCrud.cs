@@ -27,7 +27,7 @@ namespace ToB.Common.DB
             return added.Entity.Id;
         }
 
-        public IEnumerable<TValue> Read()
+        public IEnumerable<TValue> List()
         {
             return Entities.ToList();
         }

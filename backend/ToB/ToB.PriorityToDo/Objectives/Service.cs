@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ToB.Common.DB;
 using ToB.Common.Extensions;
@@ -7,13 +8,12 @@ using ToB.PriorityToDo.Objectives.RBT;
 
 namespace ToB.PriorityToDo.Objectives
 {
-    public sealed class ObjectiveService : IObjectiveService
+    public sealed class Service : IService
     {
         private readonly Context context;
         private readonly IBinarySearchTree<Node> tree;
 
         private ICrud<int, Objective> Objectives => context.AsCrud(_ => _.Objectives);
-
         
         public IEnumerable<(int id, string text)> ToPriorityList(int project)
         {
@@ -46,18 +46,12 @@ namespace ToB.PriorityToDo.Objectives
 
         public bool Remove(int id)
         {
-            return Objectives.Delete(id);
+            throw new NotImplementedException();
         }
 
         public bool Update(int id, string text)
         {
-            var entity = Objectives.Read(id);
-            
-            var none = entity == null;
-            if (none) return false;
-
-            entity.Text = text;
-            return Objectives.Update(entity);
+            throw new NotImplementedException();
         }
     }
 }

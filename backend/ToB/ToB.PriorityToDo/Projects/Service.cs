@@ -33,7 +33,7 @@ namespace ToB.PriorityToDo.Projects
 
         public TreeDto ToProjects()
         {
-            return crud.Read()
+            return crud.List()
                 .ToList()
                 ._(_ => buildTree(_, root));
         }

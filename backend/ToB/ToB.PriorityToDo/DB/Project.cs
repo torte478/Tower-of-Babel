@@ -10,14 +10,14 @@ namespace ToB.PriorityToDo.DB
     {
         public Project()
         {
-            ObjectiveProjects = new HashSet<ObjectiveProject>();
+            Objectives = new HashSet<Objective>();
         }
 
         public int Id { get; set; }
         public int Parent { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<ObjectiveProject> ObjectiveProjects { get; set; }
+        public virtual ICollection<Objective> Objectives { get; set; }
         
         public void Copy(Project other)
         {

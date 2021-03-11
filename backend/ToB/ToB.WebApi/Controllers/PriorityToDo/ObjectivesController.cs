@@ -13,9 +13,9 @@ namespace ToB.WebApi.Controllers.PriorityToDo
     [ApiController]
     public sealed class ObjectivesController : ControllerBase
     {
-        private readonly IObjectiveService service;
+        private readonly IService service;
 
-        public ObjectivesController(IObjectiveService service)
+        public ObjectivesController(IService service)
         {
             this.service = service;
         }

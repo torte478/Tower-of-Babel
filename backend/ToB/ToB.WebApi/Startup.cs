@@ -13,6 +13,8 @@ using ToB.PriorityToDo.Projects;
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
+using IService = ToB.PriorityToDo.Objectives.IService;
+using Service = ToB.PriorityToDo.Objectives.Service;
 
 namespace ToB.WebApi
 {
@@ -62,12 +64,12 @@ namespace ToB.WebApi
                 _.GetRequiredService<Context>(),
                 _ => _.Projects));
 
-            services.AddTransient<IService>(_ => new Service(
+            services.AddTransient<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
                 _.GetRequiredService<ICrud<int, Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
             
-            services.AddTransient<IObjectiveService, ObjectiveService>();
+            services.AddTransient<IService, Service>();
 
             #endregion
             

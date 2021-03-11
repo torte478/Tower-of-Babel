@@ -2,7 +2,7 @@
 
 namespace ToB.PriorityToDo.Objectives
 {
-    public interface IObjectiveService
+    public interface IService
     {
         IEnumerable<(int id, string text)> ToPriorityList(int project);
         (bool added, int id) StartAdd(int project, string text);
