@@ -42,7 +42,7 @@ namespace ToB.PriorityToDo.Objectives
             if (tree.Count > 0)
                 return (false, tree.Root.Value);
 
-            var value = measure.Next(measure.Min, measure.Max);
+            var value = measure.Next();
             Add(text, value);
             
             return (true, value);
@@ -63,7 +63,10 @@ namespace ToB.PriorityToDo.Objectives
                     return (false, node.Right.Value.Value);
 
                 var (exists, next) = node.ToNext();
-                var added = measure.Next(node.Value.Value, exists ? next.Value.Value : measure.Max);
+                var added = exists
+                    ? measure.Next(node.Value.Value, next.Value.Value)
+                    : measure.NextMax(node.Value.Value);
+                
                 Add(text, added);
                 return (true, added);
             }
@@ -73,7 +76,10 @@ namespace ToB.PriorityToDo.Objectives
                     return (false, node.Left.Value.Value);
 
                 var (exists, previous) = node.ToPrevious();
-                var added = measure.Next(exists ? previous.Value.Value : measure.Min, node.Value.Value);
+                var added = exists
+                    ? measure.Next(previous.Value.Value, node.Value.Value)
+                    : measure.NextMin(node.Value.Value);
+                
                 Add(text, added);
                 return (true, added);
             }

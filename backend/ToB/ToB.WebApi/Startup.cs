@@ -70,6 +70,8 @@ namespace ToB.WebApi
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
 
+            services.AddTransient<IMeasure>(_ => new Measure(1024));
+            
             services.AddTransient<IProjects>(_ => new Projects(
                 _.GetRequiredService<Context>(),
                 id => Project.Create(
