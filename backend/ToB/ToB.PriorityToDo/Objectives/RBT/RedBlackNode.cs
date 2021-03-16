@@ -4,7 +4,7 @@ namespace ToB.PriorityToDo.Objectives.RBT
 {
     public sealed class RedBlackNode<T>
     {
-        internal RedBlackNode(T value)
+        public RedBlackNode(T value)
         {
             this.Left = null;
             this.Right = null;
@@ -29,12 +29,12 @@ namespace ToB.PriorityToDo.Objectives.RBT
         /// <summary>
         /// Points to a the left sub tree of this node
         /// </summary>
-        internal RedBlackNode<T> Left { get; set; }
+        public RedBlackNode<T> Left { get; set; }
 
         /// <summary>
         /// Points to a the right sub tree of this node
         /// </summary>
-        internal RedBlackNode<T> Right { get; set; }
+        public RedBlackNode<T> Right { get; set; }
 
         /// <summary>
         /// The colour of the node.

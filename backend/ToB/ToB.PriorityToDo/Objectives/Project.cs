@@ -62,9 +62,9 @@ namespace ToB.PriorityToDo.Objectives
                 if (node.Right != null)
                     return (false, node.Right.Value.Value);
 
-                var (exists, next) = node.ToNext();
-                var added = exists
-                    ? measure.Next(node.Value.Value, next.Value.Value)
+                var next = tree.FindNext(node);
+                var added = next != null
+                    ? measure.Next(node.Value.Value, next.Value)
                     : measure.NextMax(node.Value.Value);
                 
                 Add(text, added);
@@ -75,9 +75,9 @@ namespace ToB.PriorityToDo.Objectives
                 if (node.Left != null)
                     return (false, node.Left.Value.Value);
 
-                var (exists, previous) = node.ToPrevious();
-                var added = exists
-                    ? measure.Next(previous.Value.Value, node.Value.Value)
+                var previous = tree.FindPrevious(node);
+                var added = previous != null
+                    ? measure.Next(previous.Value, node.Value.Value)
                     : measure.NextMin(node.Value.Value);
                 
                 Add(text, added);
@@ -119,14 +119,14 @@ namespace ToB.PriorityToDo.Objectives
             var node = tree.ToNode(value);
             
             {
-                var (exists, previous) = node.ToPrevious();
-                if (exists && previous.Value.Value + 1 == node.Value.Value)
+                var previous = tree.FindPrevious(node);
+                if (previous != null && previous.Value + 1 == node.Value.Value)
                     Rebuild();
             }
-            
+
             {
-                var (exists, next) = node.ToNext();
-                if (exists && next.Value.Value - 1 == node.Value.Value)
+                var next = tree.FindNext(node);
+                if (next != null && next.Value - 1 == node.Value.Value)
                     Rebuild();
             }
         }

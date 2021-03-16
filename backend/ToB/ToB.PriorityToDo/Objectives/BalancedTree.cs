@@ -23,7 +23,7 @@ namespace ToB.PriorityToDo.Objectives
             var current = origin.Root;
             while (true)
             {
-                var compare = current.Value.CompareTo(value);
+                var compare = value.CompareTo(current.Value);
                 if (compare == 0)
                     return toNode(current);
 
@@ -31,6 +31,34 @@ namespace ToB.PriorityToDo.Objectives
                     ? current.Left
                     : current.Right;
             }
+        }
+
+        public T FindNext(INode<T> node)
+        {
+            var next = false;
+            foreach (var current in origin.InOrderIterator)
+            {
+                if (next)
+                    return current;
+
+                next = current.CompareTo(node.Value) == 0;
+            }
+
+            return default;
+        }
+
+        public T FindPrevious(INode<T> node)
+        {
+            T previous = default;
+            foreach (var current in origin.InOrderIterator)
+            {
+                if (current.CompareTo(node.Value) == 0)
+                    break;
+
+                previous = current;
+            }
+
+            return previous;
         }
 
         public void Add(T value)

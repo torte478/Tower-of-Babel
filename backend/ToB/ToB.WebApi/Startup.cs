@@ -59,7 +59,8 @@ namespace ToB.WebApi
             #region PriorityToDo
 
             services.AddDbContext<Context>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")));
+                options.UseNpgsql(Configuration.GetConnectionString("PriorityToDoContext")),
+                ServiceLifetime.Singleton);
 
             services.AddTransient<ICrud<int, PriorityToDo.DB.Project>>(_ => new DbCrud<Context, PriorityToDo.DB.Project>(
                 _.GetRequiredService<Context>(),
@@ -69,7 +70,7 @@ namespace ToB.WebApi
                 _.GetRequiredService<Context>(),
                 _ => _.Objectives));
 
-            services.AddTransient<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
+            services.AddSingleton<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
                 _.GetRequiredService<ICrud<int, PriorityToDo.DB.Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
@@ -87,7 +88,7 @@ namespace ToB.WebApi
                     storage: _.GetRequiredService<ICrud<int, Objective>>(),
                     createTree: _.GetRequiredService<IBalancedTree<Objective>>)));
             
-            services.AddTransient<IService>(_ => new Service(
+            services.AddSingleton<IService>(_ => new Service(
                 _.GetRequiredService<IProjects>(),
                 new IntSequence().Next));
 

@@ -36,5 +36,10 @@ namespace ToB.PriorityToDo.DB
 
             return Value.CompareTo(other.Value);
         }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Value} - {Text}";
+        }
     }
 }
