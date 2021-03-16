@@ -87,7 +87,12 @@ namespace ToB.PriorityToDo.Objectives
 
         public bool Remove(int id)
         {
-            return storage.Delete(id);
+            var deleted = storage.Delete(id);
+            
+            if (deleted)
+                Reload();
+            
+            return deleted;
         }
 
         public bool Update(int id, string text)
@@ -145,10 +150,15 @@ namespace ToB.PriorityToDo.Objectives
                 storage.Update(node);
             }
 
+            Reload();
+        }
+
+        private void Reload()
+        {
             tree.Clear();
             FillTree(project, storage, tree);
         }
-        
+
         private static void FillTree(int project, ICrud<int, Objective> storage, IBalancedTree<Objective> tree)
         {
             var nodes = storage
