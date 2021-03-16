@@ -26,12 +26,13 @@ namespace ToB.PriorityToDo.Objectives
 
         public (bool added, int id) StartAdd(int project, string text)
         {
-            var result =  projects[project].StartAdd(text);
-            
-            if (!result.added)
-                toAdd.Add(getNextId(), (project, result.node, text));
+            var (added, node) = projects[project].StartAdd(text);
 
-            return result;
+            if (added) return (true, default);
+            
+            var id = getNextId();
+            toAdd.Add(id, (project, node, text));
+            return (false, id);
         }
 
         public string NextForAdd(int id)
