@@ -8,115 +8,88 @@ namespace ToB.PriorityToDo.Objectives
 {
     public sealed class Foo<T> : IFoo<T>
     {
-        private readonly Dictionary<T, int> values = new();
-        private readonly RedBlackTree<int> tree = new();
-        
+        private readonly RedBlackTree<Node> tree = new();
         private readonly IMeasure measure;
-
-        public event Action<T, int> NodeAdded;
-        public event Action<T> NodeRemoved;
+        
         public event Action<Dictionary<T, int>> Rebuilded;
 
         public Foo(IMeasure measure)
         {
             this.measure = measure;
         }
-
-        public (bool added, T next) Add(T item)
-        {
-            if (values.ContainsKey(item))
-                throw new FooException($"Item already exists: {item}");
-            
-            if (values.Count == 0)
-            {
-                var value = measure.Next();
-                return Save(item, value);
-            }
-            else
-            {
-                return (false, values.First(_ => _.Value == tree.Root.Value).Key);
-            }
-        }
-
-        public (bool added, T next) Add(T item, T target, bool greater)
-        {
-            while (true)
-            {
-                if (values.ContainsKey(item)) 
-                    throw new FooException($"Item already exists: {item}");
-                if (!values.ContainsKey(target)) 
-                    throw new FooException($"Target item isn't exists: {target}");
-
-                var value = values[target];
-                var node = ToNode(value);
-                var child = greater ? node.Right : node.Left;
-
-                if (child != null) return (false, values.First(_ => _.Value == child.Value).Key);
-
-                var added = greater
-                    ? measure.Next(value, FindNext(node))
-                    : measure.Next(FindPrevious(node), value);
-
-                if (!tree.Contains(added)) 
-                    return Save(item, added);
-
-                Rebuild();
-            }
-        }
-
-        public bool Remove(T item)
-        {
-            var contains = values.ContainsKey(item);
-            if (!contains)
-                return false;
-
-            tree.Remove(values[item]);
-            values.Remove(item);
-            NodeRemoved.Raise(item);
-            return true;
-        }
-
+        
         public IEnumerable<T> ToPriorityList()
         {
             return tree
                 .InOrderIterator
                 .Reverse()
-                .Select(_ => values.First(x => x.Value == _).Key); //TODO : refactor !!!
+                .Select(_ => _.Item);
         }
         
-        private (bool, T) Save(T item, int added)
+        public void Add(T item, int value)
         {
-            if (tree.Contains(added))
+            tree.Add(new Node(item, value));
+        }
+        
+        public (bool can, T next) CanAdd(T target, bool greater)
+        {
+            var node = ToNode(target);
+            var child = greater ? node.Right : node.Left;
+
+            return child == null
+                ? (false, default)
+                : (true, child.Value.Item);
+        }
+        
+        public int Add(T target, bool greater, T item)
+        {
+            int value;
+            while (!TryAdd(target, greater, item, out value))
+            {
                 Rebuild();
+            }
+            return value;
+        }
+        
+        public (bool exists, T root) FindRoot()
+        {
+            return tree.Root != null
+                ? (true, tree.Root.Value.Item)
+                : (false, default);
+        }
+        
+        public bool Remove(T item)
+        {
+            var node = tree.FirstOrDefault(_ => _.Item.Equals(item));
             
-            values.Add(item, added);
-            tree.Insert(added);
-            NodeAdded.Raise(item, added);
+            var exists = node != null;
+            if (exists)
+                tree.Remove(node);
             
-            return (true, default);
+            return exists;
         }
 
         private void Rebuild()
         {
-            var updated = values
-                .OrderBy(_ => _.Value)
-                .Select(_ => _.Key)
-                .Zip(measure.Fill(values.Count))
+            var updated = tree
+                .InOrderIterator
+                .Select(_ => _.Item)
+                .Zip(measure.Fill(tree.Count))
                 .ToDictionary(x => x.First, x => x.Second);
 
-            values.Clear();
             tree.Clear();
-            foreach (var update in updated)
+            foreach (var (item, value) in updated)
             {
-                values.Add(update.Key, update.Value);
-                tree.Add(update.Value);
+                tree.Add(new Node(item, value));
             }
 
             Rebuilded.Raise(updated);
         }
 
-        private RedBlackNode<int> ToNode(int value)
+        private RedBlackNode<Node> ToNode(T item)
         {
+            var value = tree.First(_ => _.Item.Equals(item)).Value;
+            
             var current = tree.Root;
             while (true)
             {
@@ -130,32 +103,67 @@ namespace ToB.PriorityToDo.Objectives
             }
         }
 
-        private int FindNext(RedBlackNode<int> node)
+        private int FindNextValue(RedBlackNode<Node> node)
         {
             var next = false;
             foreach (var current in tree.InOrderIterator)
             {
                 if (next)
-                    return current;
+                    return current.Value;
 
                 next = current.CompareTo(node.Value) == 0;
             }
 
-            return measure.NextMax(tree.Max());
+            return measure.NextMax(tree.Max().Value);
         }
 
-        private int FindPrevious(RedBlackNode<int> node)
+        private int FindPrevious(RedBlackNode<Node> node)
         {
-            var previous = measure.NextMin(tree.Min());
+            var previous = measure.NextMin(tree.Min().Value);
+            
             foreach (var current in tree.InOrderIterator)
             {
                 if (current.CompareTo(node.Value) == 0)
                     break;
 
-                previous = current;
+                previous = current.Value;
             }
 
             return previous;
         }
+        
+        private bool TryAdd(T target, bool greater, T item, out int value)
+        {
+            var node = ToNode(target);
+            value = greater
+                ? measure.Next(node.Value.Value, FindNextValue(node))
+                : measure.Next(FindPrevious(node), node.Value.Value);
+
+            var added = new Node(item, value);
+            if (tree.Contains(added)) 
+                return false;
+            
+            tree.Add(added);
+            return true;
+        }
+
+
+        private sealed class Node : IComparable<Node>
+        {
+            public T Item { get;  }
+            public int Value { get; }
+            
+            public Node(T item, int value)
+            {
+                Item = item;
+                Value = value;
+            }
+
+            public int CompareTo(Node other)
+            {
+                return Value.CompareTo(other.Value);
+            }
+        }
+        
     }
 }

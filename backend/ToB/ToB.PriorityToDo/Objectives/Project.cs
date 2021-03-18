@@ -46,7 +46,8 @@ namespace ToB.PriorityToDo.Objectives
 
         public int? FindRoot()
         {
-            return tree.Root;
+            var (exists, root) = tree.FindRoot();
+            return exists ? root : null;
         }
 
         public (bool added, int next) TryAdd(int target, bool greater, string text)
