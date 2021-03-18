@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+
 using ToB.PriorityToDo.Contracts;
-using ToB.PriorityToDo.Objectives;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
 {
@@ -23,32 +23,35 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         {
             return new(GetAllProjectItems(projectId));
         }
-
+        
         [HttpGet]
         [Route("getRoot")]
-        public ActionResult<int?> FindRoot(int projectId)
+        public ActionResult<MonadDto> FindRoot(int projectId)
         {
-            return service.FindRoot(projectId);
+            var id = service.FindRoot(projectId);
+            return new MonadDto
+            {
+                Success = id.HasValue,
+                Id = id ?? -1
+            };
         }
 
         [HttpPost]
         [Route("add")]
-        public ActionResult<AddDto> TryAdd(int projectId, int target, bool greater, string text)
+        public ActionResult<MonadDto> TryAdd(int projectId, int target, bool greater, string text)
         {
             var (added, next) =  service.TryAdd(projectId, target, greater, text);
-            return new AddDto
+            return new MonadDto
             {
-                Added = added,
-                Next = next
+                Success = added,
+                Id = next
             };
         }
 
         [HttpDelete]
-        public ActionResult<List<ObjectiveDto>> Delete(int projectId, int id)
+        public ActionResult<bool> Delete(int projectId, int id)
         {
-            service.Remove(projectId, id);
-
-            return new ActionResult<List<ObjectiveDto>>(GetAllProjectItems(projectId));
+            return service.Remove(projectId, id);
         }
 
         [HttpPost]
@@ -83,10 +86,10 @@ namespace ToB.WebApi.Controllers.PriorityToDo
             public string Text { get; set; }
         }
 
-        public sealed class AddDto
+        public sealed class MonadDto
         {
-            public bool Added { get; set; }
-            public int Next { get; set; }
+            public bool Success { get; set; }
+            public int Id { get; set; }
         }
     }
 }

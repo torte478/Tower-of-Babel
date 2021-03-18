@@ -81,7 +81,6 @@ namespace ToB.WebApi
                 _.GetRequiredService<Context>(),
                 id => PriorityToDo.Objectives.Project.Create(
                     project: id,
-                    measure: _.GetRequiredService<IMeasure>(),
                     storage: _.GetRequiredService<ICrud<int, Objective>>(),
                     createTree: _.GetRequiredService<IBalancedTree<int>>)));
 

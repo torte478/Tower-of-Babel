@@ -20,15 +20,7 @@ namespace ToB.PriorityToDo.Objectives
         {
             this.measure = measure;
         }
-        
-        public IEnumerable<T> ToPriorityList()
-        {
-            return tree
-                .InOrderIterator
-                .Reverse()
-                .Select(_ => _.Item);
-        }
-        
+
         public void Add(T item, int value)
         {
             tree.Add(new Node(item, value));
@@ -36,6 +28,9 @@ namespace ToB.PriorityToDo.Objectives
         
         public (bool can, T next) CanAdd(T target, bool greater)
         {
+            if (tree.Count == 0)
+                return (true, default);
+
             var node = ToNode(target);
             var child = greater ? node.Right : node.Left;
 
@@ -60,14 +55,14 @@ namespace ToB.PriorityToDo.Objectives
             }
             return value;
         }
-        
+
         public (bool exists, T root) FindRoot()
         {
             return tree.Root != null
                 ? (true, tree.Root.Value.Item)
                 : (false, default);
         }
-        
+
         public bool Remove(T item)
         {
             var node = tree.FirstOrDefault(_ => _.Item.Equals(item));
@@ -99,7 +94,7 @@ namespace ToB.PriorityToDo.Objectives
         private RedBlackNode<Node> ToNode(T item)
         {
             var value = tree.First(_ => _.Item.Equals(item)).Value;
-            
+
             var current = tree.Root;
             while (true)
             {
@@ -130,7 +125,7 @@ namespace ToB.PriorityToDo.Objectives
         private int FindPrevious(RedBlackNode<Node> node)
         {
             var previous = measure.NextMin(tree.Min().Value);
-            
+
             foreach (var current in tree.InOrderIterator)
             {
                 if (current.CompareTo(node.Value) == 0)

@@ -23,7 +23,7 @@ namespace ToB.PriorityToDo.Objectives
             tree.Rebuilded += UpdateStored;
         }
 
-        public static IProject Create(int project, IMeasure measure, ICrud<int, Objective> storage, Func<IBalancedTree<int>> createTree)
+        public static IProject Create(int project, ICrud<int, Objective> storage, Func<IBalancedTree<int>> createTree)
         {
             var tree = createTree();
             foreach (var item in storage.List().Where(_ => _.Project == project))
@@ -41,7 +41,7 @@ namespace ToB.PriorityToDo.Objectives
         {
             return storage.List() // TODO : optimize list
                 .Where(_ => _.Project == project)
-                .OrderBy(_ => _.Value)
+                .OrderByDescending(_ => _.Value)
                 .Select(_ => (_.Id, _.Text));
         }
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using ToB.PriorityToDo.Contracts;
 
@@ -21,8 +19,8 @@ namespace ToB.PriorityToDo.Objectives.Tests
         public void InsertNode_WhenTreeIsEmpty()
         {
             tree.Add(42, true, 1);
-            
-            Assert.That(tree.ToPriorityList().Count(), Is.EqualTo(1));
+
+            Assert.That(tree.FindRoot().exists, Is.True);
         }
 
         [Test]
@@ -32,7 +30,7 @@ namespace ToB.PriorityToDo.Objectives.Tests
 
             tree.Remove(42);
 
-            Assert.That(tree.ToPriorityList().Count(), Is.EqualTo(0));
+            Assert.That(tree.FindRoot().exists, Is.False);
         }
 
         [Test]
@@ -57,6 +55,14 @@ namespace ToB.PriorityToDo.Objectives.Tests
             tree.Add(3, true, 4);
 
             Assert.That(raised, Is.True);
+        }
+
+        [Test]
+        public void ReturnTrue_WhenCheckAddingToEmptyTree()
+        {
+            var (can, _) = tree.CanAdd(42, true);
+
+            Assert.That(can, Is.True);
         }
     }
 }
