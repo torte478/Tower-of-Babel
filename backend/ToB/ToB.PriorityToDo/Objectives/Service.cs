@@ -5,16 +5,16 @@ namespace ToB.PriorityToDo.Objectives
 {
     public sealed class Service : IService
     {
-        private readonly Dictionary<int, IProject> projects;
+        private readonly IProjects projects;
 
-        public Service(Dictionary<int, IProject> projects)
+        public Service(IProjects projects)
         {
             this.projects = projects;
         }
 
         public IEnumerable<(int id, string text)> ToPriorityList(int project)
         {
-            return projects.ContainsKey(project)
+            return projects.Contains(project)
                 ? projects[project].ToPriorityList()
                 : Enumerable.Empty<(int, string)>();
         }

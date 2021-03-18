@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+
 using NUnit.Framework;
 
 namespace ToB.PriorityToDo.Objectives.Tests
@@ -18,26 +18,15 @@ namespace ToB.PriorityToDo.Objectives.Tests
         [Test]
         public void InsertNode_WhenTreeIsEmpty()
         {
-            tree.Add(42);
+            tree.Add(42, true, 1);
             
             Assert.That(tree.ToPriorityList().Count(), Is.EqualTo(1));
         }
 
         [Test]
-        public void RaiseNodeAddedEvent_AfterValueInsert()
-        {
-            var raised = false;
-            tree.NodeAdded += (_, _) => { raised = true; };
-
-            tree.Add(42);
-
-            Assert.That(raised, Is.True);
-        }
-
-        [Test]
         public void RemoveNode_WhenTreeContainsIt()
         {
-            tree.Add(42);
+            tree.Add(42, 10);
 
             tree.Remove(42);
 
@@ -45,26 +34,13 @@ namespace ToB.PriorityToDo.Objectives.Tests
         }
 
         [Test]
-        public void RaiseNodeRemovedEvent_AfterValueRemoved()
+        public void ReturnTrue_WhenCheckAddingToNodeWithNullChild()
         {
-            var raised = false;
-            tree.NodeRemoved += _ => { raised = true; };
-            tree.Add(42);
+            tree.Add(42, 10);
 
-            tree.Remove(42);
+            var (can, _) = tree.CanAdd(42, true);
 
-            Assert.That(raised, Is.True);
-        }
-
-        [Test]
-        public void AddNode_WhenChildIsNull()
-        {
-            tree.Add(42);
-
-            var (_, next) = tree.Add(111);
-            var (added, _) = tree.Add(111, next, true);
-
-            Assert.That(added, Is.True);
+            Assert.That(can, Is.True);
         }
 
         [Test]
@@ -73,34 +49,12 @@ namespace ToB.PriorityToDo.Objectives.Tests
             var raised = false;
             tree.Rebuilded += _ => { raised = true; }; //TODO : to test utility class
             
-            tree.Add(1);
-            tree.Add(2, 1, true);
-            tree.Add(3, 2, false);
-            tree.Add(4, 1, true);
+            tree.Add(666, true, 1);
+            tree.Add(1, true, 2);
+            tree.Add(2, false, 3);
+            tree.Add(3, true, 4);
 
             Assert.That(raised, Is.True);
-        }
-
-        [Test]
-        public void ThrowException_WhenInsertDuplicate()
-        {
-            tree.Add(1);
-
-            Assert.Throws<FooException>(() => tree.Add(1));
-        }
-
-        [Test]
-        public void ThrowException_WhenContinueInsertDuplicate()
-        {
-            tree.Add(1);
-
-            Assert.Throws<FooException>(() => tree.Add(1, 1, true));
-        }
-
-        [Test]
-        public void ThrowException_WhenNotContainsTarget()
-        {
-            Assert.Throws<FooException>(() => tree.Add(1, 1, true));
         }
     }
 }

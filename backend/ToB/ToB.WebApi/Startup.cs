@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ToB.Common;
+
 using ToB.Common.DB;
 using ToB.PriorityToDo.DB;
 using ToB.PriorityToDo.Objectives;
@@ -13,6 +13,7 @@ using ToB.PriorityToDo.Projects;
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
+
 using IService = ToB.PriorityToDo.Objectives.IService;
 using Project = ToB.PriorityToDo.Objectives.Project;
 using Service = ToB.PriorityToDo.Objectives.Service;
@@ -77,8 +78,7 @@ namespace ToB.WebApi
 
             services.AddTransient<IMeasure>(_ => new Measure(1024));
 
-            services.AddTransient<IBalancedTree<Objective>>(_ => new BalancedTree<Objective>(
-                _ => new Node<Objective>(_)));
+            services.AddTransient<IFoo<int>, Foo<int>>();
             
             services.AddTransient<IProjects>(_ => new Projects(
                 _.GetRequiredService<Context>(),
@@ -86,11 +86,9 @@ namespace ToB.WebApi
                     project: id,
                     measure: _.GetRequiredService<IMeasure>(),
                     storage: _.GetRequiredService<ICrud<int, Objective>>(),
-                    createTree: _.GetRequiredService<IBalancedTree<Objective>>)));
-            
-            services.AddSingleton<IService>(_ => new Service(
-                _.GetRequiredService<IProjects>(),
-                new IntSequence().Next));
+                    createTree: _.GetRequiredService<IFoo<int>>)));
+
+            services.AddSingleton<IService, Service>();
 
             #endregion
             
