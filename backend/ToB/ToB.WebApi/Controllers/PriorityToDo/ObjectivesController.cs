@@ -28,36 +28,25 @@ namespace ToB.WebApi.Controllers.PriorityToDo
 
         [HttpPost]
         [Route("startAdd")]
-        public ActionResult<AddDto> StartAdd(int projectId, string text)
+        public ActionResult<int> StartAdd(int projectId)
         {
-            var result = service
-                .StartAdd(projectId, text)
-                ._(_ => new AddDto
-                {
-                    Added = _.added,
-                    Id = _.id
-                });
-
-            return FinishOrNext(projectId, result);
+            return service.StartAdd(projectId);
         }
 
         [HttpPost]
         [Route("continueAdd")]
-        public ActionResult<AddDto> ContinueAdd(int projectId, int id, bool greater)
+        public ActionResult<AddDto> ContinueAdd(int operationId, string text, bool greater = false)
         {
-            var result = service
-                .ContinueAdd(id, greater)
+            return service.ContinueAdd(operationId, text, greater)
                 ._(_ => new AddDto
                 {
                     Added = _.added,
-                    Id = id
+                    Next = next
                 });
-
-            return FinishOrNext(projectId, result);
         }
 
         [HttpDelete]
-        public ActionResult<List<ObjectiveDto>> Complete(int projectId, int id)
+        public ActionResult<List<ObjectiveDto>> Delete(int projectId, int id)
         {
             service.Remove(projectId, id);
 
@@ -66,7 +55,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
 
         [HttpPost]
         [Route("update")]
-        public ActionResult<bool> Change(int projectId, int id, string text)
+        public ActionResult<bool> Update(int projectId, int id, string text)
         {
             return service.Update(projectId, id, text);
         }
@@ -76,16 +65,6 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         public ActionResult<List<int>> Actualize(int projectId, float percentage)
         {
             throw new NotImplementedException(); //TODO
-        }
-
-        private ActionResult<AddDto> FinishOrNext(int projectId, AddDto result)
-        {
-            if (result.Added)
-                result.Items = GetAllProjectItems(projectId);
-            else
-                result.Next = service.NextForAdd(result.Id);
-
-            return result;
         }
         
         private List<ObjectiveDto> GetAllProjectItems(int projectId)
@@ -109,9 +88,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         public sealed class AddDto
         {
             public bool Added { get; set; }
-            public int Id { get; set; }
             public string Next { get; set; }
-            public IEnumerable<ObjectiveDto> Items { get; set; }
         }
     }
 }
