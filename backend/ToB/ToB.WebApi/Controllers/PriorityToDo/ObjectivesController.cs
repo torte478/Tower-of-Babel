@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
-using ToB.Common.Extensions;
-using ToB.PriorityToDo;
 using ToB.PriorityToDo.Objectives;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
@@ -37,12 +35,12 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         [Route("continueAdd")]
         public ActionResult<AddDto> ContinueAdd(int operationId, string text, bool greater = false)
         {
-            return service.ContinueAdd(operationId, text, greater)
-                ._(_ => new AddDto
-                {
-                    Added = _.added,
-                    Next = next
-                });
+            var (added, next) =  service.ContinueAdd(operationId, text, greater);
+            return new AddDto
+            {
+                Added = added,
+                Next = next
+            };
         }
 
         [HttpDelete]

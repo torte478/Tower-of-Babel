@@ -6,64 +6,52 @@ namespace ToB.PriorityToDo.Objectives
 {
     public sealed class Service : IService
     {
-        private readonly IProjects projects;
-        private readonly Func<int> getNextId;
+        private readonly Dictionary<int, IProject> projects;
+        private readonly Func<int> nextId;
         
-        private readonly Dictionary<int, (int project, int node, string text)> toAdd = new();
+        private readonly Dictionary<int, (int project, int next)> operations = new();
 
-        public Service(IProjects projects, Func<int> getNextId)
+        public Service(Dictionary<int, IProject> projects, Func<int> nextId)
         {
             this.projects = projects;
-            this.getNextId = getNextId;
+            this.nextId = nextId;
         }
 
         public IEnumerable<(int id, string text)> ToPriorityList(int project)
         {
-            return projects.Contains(project)
+            return projects.ContainsKey(project)
                 ? projects[project].ToPriorityList()
                 : Enumerable.Empty<(int, string)>();
         }
 
-        public (bool added, int id) StartAdd(int project, string text)
+        public int StartAdd(int project)
         {
-            var (added, node) = projects[project].StartAdd(text);
+            var id = nextId();
+            operations.Add(id, (project, -1)); //TODO : constant
+            return id;
+        }
 
-            if (added) return (true, default);
+        public (bool added, string next) ContinueAdd(int operation, string text, bool greater)
+        {
+            var (project, target) = operations[operation];
+            var (added, otherwise, next) =  projects[project].TryAdd(target, text, greater);
             
-            var id = getNextId();
-            toAdd.Add(id, (project, node, text));
-            return (false, id);
+            if (added)
+                operations.Remove(operation);
+            else
+                operations[operation] = (project, otherwise);
+            
+            return (added, next);
         }
-
-        public string NextForAdd(int id)
-        {
-            var added = toAdd[id];
-            return projects[added.project].NextForAdd(added.node);
-        }
-
-        public (bool added, string next) ContinueAdd(int id, bool greater)
-        {
-            var added = toAdd[id];
-            var result = projects[added.project].ContinueAdd(added.node, greater, added.text);
-
-            if (result.added)
-            {
-                toAdd.Remove(id);
-                return (true, string.Empty);
-            }
-
-            toAdd[id] = (added.project, result.node, added.text);
-            return (false, NextForAdd(id));
-        }
-
+        
         public bool Remove(int project, int id)
         {
-            return projects.Contains(project) && projects[project].Remove(id);
+            return projects[project].Remove(id);
         }
 
         public bool Update(int project, int id, string text)
         {
-            return projects.Contains(project) && projects[project].Update(id, text);
+            return projects[project].Update(id, text);
         }
     }
 }
