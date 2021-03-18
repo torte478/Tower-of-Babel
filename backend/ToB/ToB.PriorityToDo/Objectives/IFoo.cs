@@ -5,13 +5,18 @@ namespace ToB.PriorityToDo.Objectives
 {
     public interface IFoo<T>
     {
-        event Action<T, int> NodeAdded;
-        event Action<T> NodeRemoved;
+        T? Root { get; }
+
         event Action<Dictionary<T, int>> Rebuilded;
 
-        (bool added, T next) Add(T item);
-        (bool added, T next) Add(T item, T target, bool greater);
-        bool Remove(T value);
         IEnumerable<T> ToPriorityList();
+        
+        void Add(T item, int value);
+        (bool can, int next) CanAdd(int target, bool greater);
+        int Add(T target, bool greater, T item);
+
+        
+        bool Remove(T item);
+
     }
 }

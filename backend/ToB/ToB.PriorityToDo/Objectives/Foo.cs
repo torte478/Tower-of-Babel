@@ -64,15 +64,15 @@ namespace ToB.PriorityToDo.Objectives
             }
         }
 
-        public bool Remove(T value)
+        public bool Remove(T item)
         {
-            var contains = values.ContainsKey(value);
+            var contains = values.ContainsKey(item);
             if (!contains)
                 return false;
 
-            tree.Remove(values[value]);
-            values.Remove(value);
-            NodeRemoved.Raise(value);
+            tree.Remove(values[item]);
+            values.Remove(item);
+            NodeRemoved.Raise(item);
             return true;
         }
 
