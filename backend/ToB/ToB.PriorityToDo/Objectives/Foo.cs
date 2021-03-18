@@ -37,12 +37,19 @@ namespace ToB.PriorityToDo.Objectives
             var child = greater ? node.Right : node.Left;
 
             return child == null
-                ? (false, default)
-                : (true, child.Value.Item);
+                ? (true, default)
+                : (false, child.Value.Item);
         }
         
         public int Add(T target, bool greater, T item)
         {
+            if (tree.Count == 0)
+            {
+                var result = measure.Next();
+                tree.Add(new Node(item, result));
+                return result;
+            }
+
             int value;
             while (!TryAdd(target, greater, item, out value))
             {
@@ -93,7 +100,7 @@ namespace ToB.PriorityToDo.Objectives
             var current = tree.Root;
             while (true)
             {
-                var compare = value.CompareTo(current.Value);
+                var compare = value.CompareTo(current.Value.Value);
                 if (compare == 0)
                     return current;
 
