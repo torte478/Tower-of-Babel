@@ -10,50 +10,39 @@ namespace ToB.PriorityToDo.Objectives
     public sealed class Project : IProject
     {
         private readonly int project;
-        private readonly IMeasure measure;
-        private readonly IBalancedTree<Objective> tree;
+        private readonly IFoo<int> tree;
         private readonly ICrud<int, Objective> storage;
+        
+        private readonly Dictionary<int, int> objectiveToNode = new();
 
-        private Project(int project, IMeasure measure, ICrud<int, Objective> storage, IBalancedTree<Objective> tree)
-        {
-            this.project = project;
-            this.measure = measure;
-            this.tree = tree;
-            this.storage = storage;
-        }
-
-        public static IProject Create(int project, IMeasure measure, ICrud<int, Objective> storage, Func<IBalancedTree<Objective>> createTree)
-        {
-            var tree = createTree();
-            FillTree(project, storage, tree);
-
-            return new Project(project, measure, storage, tree);
-        }
+        // private Project(int project, IMeasure measure, ICrud<int, Objective> storage, IBalancedTree<Objective> tree)
+        // {
+        //     this.project = project;
+        //     this.measure = measure;
+        //     this.tree = tree;
+        //     this.storage = storage;
+        // }
+        //
+        // public static IProject Create(int project, IMeasure measure, ICrud<int, Objective> storage, Func<IBalancedTree<Objective>> createTree)
+        // {
+        //     var tree = createTree();
+        //     FillTree(project, storage, tree);
+        //
+        //     return new Project(project, measure, storage, tree);
+        // }
 
         public IEnumerable<(int id, string text)> ToPriorityList()
         {
-            return tree
-                .Enumerate()
+            return storage.List() // TODO : optimize list
+                .Where(_ => _.Project == project)
                 .Select(_ => (_.Id, _.Text));
         }
 
-        public (bool added, int node) StartAdd(string text)
+        public (bool added, int next) TryAdd(int target, string text, bool greater)
         {
-            if (tree.Count > 0)
-                return (false, tree.Root.Value);
-
-            var value = measure.Next();
-            Add(text, value);
-            
-            return (true, value);
+            var result = tree.Add(target, greater);
         }
-
-        public string NextForAdd(int value)
-        {
-            var node = tree.ToNode(new Objective { Value = value });
-            return node.Value.Text;
-        }
-
+        
         public (bool added, int node) ContinueAdd(int value, bool greater, string text)
         {
             var node = tree.ToNode(new Objective {Value = value});

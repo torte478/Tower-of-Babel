@@ -6,7 +6,7 @@ namespace ToB.PriorityToDo.Objectives
     {
         IEnumerable<(int id, string text)> ToPriorityList(int project);
         int StartAdd(int project);
-        (bool added, string next) ContinueAdd(int operation, string text, bool greater);
+        (bool added, int next) TryAdd(int operation, string text, bool greater);
         bool Remove(int project, int id);
         bool Update(int project, int id, string text);
     }

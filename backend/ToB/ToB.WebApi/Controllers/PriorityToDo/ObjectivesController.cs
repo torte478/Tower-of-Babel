@@ -24,18 +24,18 @@ namespace ToB.WebApi.Controllers.PriorityToDo
             return new(GetAllProjectItems(projectId));
         }
 
-        [HttpPost]
-        [Route("startAdd")]
-        public ActionResult<int> StartAdd(int projectId)
+        [HttpGet]
+        [Route("getRoot")]
+        public ActionResult<int?> FindRoot(int projectId)
         {
-            return service.StartAdd(projectId);
+            return service.FindRoot(projectId);
         }
 
         [HttpPost]
-        [Route("continueAdd")]
-        public ActionResult<AddDto> ContinueAdd(int operationId, string text, bool greater = false)
+        [Route("add")]
+        public ActionResult<AddDto> TryAdd(int projectId, int target, bool greater, string text)
         {
-            var (added, next) =  service.ContinueAdd(operationId, text, greater);
+            var (added, next) =  service.TryAdd(projectId, target, greater, text);
             return new AddDto
             {
                 Added = added,
@@ -86,7 +86,7 @@ namespace ToB.WebApi.Controllers.PriorityToDo
         public sealed class AddDto
         {
             public bool Added { get; set; }
-            public string Next { get; set; }
+            public int Next { get; set; }
         }
     }
 }

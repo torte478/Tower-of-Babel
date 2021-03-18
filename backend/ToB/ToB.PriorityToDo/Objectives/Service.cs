@@ -31,15 +31,15 @@ namespace ToB.PriorityToDo.Objectives
             return id;
         }
 
-        public (bool added, string next) ContinueAdd(int operation, string text, bool greater)
+        public (bool added, int next) TryAdd(int operation, string text, bool greater)
         {
             var (project, target) = operations[operation];
-            var (added, otherwise, next) =  projects[project].TryAdd(target, text, greater);
+            var (added, next) =  projects[project].TryAdd(operation, target, text, greater);
             
             if (added)
                 operations.Remove(operation);
             else
-                operations[operation] = (project, otherwise);
+                operations[operation] = (project, next);
             
             return (added, next);
         }
