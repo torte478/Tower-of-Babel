@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -8,7 +7,13 @@ namespace ToB.PriorityToDo.Objectives.Tests
     [TestFixture]
     internal sealed class Foo_Should
     {
-        private IFoo<int> tree = null;
+        private IFoo<int> tree;
+
+        [SetUp]
+        public void SetUp()
+        {
+            tree = new Foo<int>(new Measure(4));
+        }
 
         [Test]
         public void InsertNode_WhenTreeIsEmpty()
@@ -22,7 +27,7 @@ namespace ToB.PriorityToDo.Objectives.Tests
         public void RaiseNodeAddedEvent_AfterValueInsert()
         {
             var raised = false;
-            tree.NodeAdded += (_, __) => { raised = true; };
+            tree.NodeAdded += (_, _) => { raised = true; };
 
             tree.Add(42);
 
@@ -61,17 +66,41 @@ namespace ToB.PriorityToDo.Objectives.Tests
 
             Assert.That(added, Is.True);
         }
-        
 
-        private interface IFoo<T>
+        [Test]
+        public void RaiseActualizeEvent_WhenValueDuplicates()
         {
-            event Action<T, int> NodeAdded;
-            event Action<T> NodeRemoved;
+            var raised = false;
+            tree.Rebuilded += _ => { raised = true; }; //TODO : to test utility class
             
-            (bool added, T next) Add(T value);
-            (bool added, T next) Add(T value, T target, bool greater);
-            bool Remove(T value);
-            IEnumerable<T> ToPriorityList();
+            tree.Add(1);
+            tree.Add(2, 1, true);
+            tree.Add(3, 2, false);
+            tree.Add(4, 1, true);
+
+            Assert.That(raised, Is.True);
+        }
+
+        [Test]
+        public void ThrowException_WhenInsertDuplicate()
+        {
+            tree.Add(1);
+
+            Assert.Throws<FooException>(() => tree.Add(1));
+        }
+
+        [Test]
+        public void ThrowException_WhenContinueInsertDuplicate()
+        {
+            tree.Add(1);
+
+            Assert.Throws<FooException>(() => tree.Add(1, 1, true));
+        }
+
+        [Test]
+        public void ThrowException_WhenNotContainsTarget()
+        {
+            Assert.Throws<FooException>(() => tree.Add(1, 1, true));
         }
     }
 }
