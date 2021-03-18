@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using ToB.PriorityToDo.Contracts;
+
 namespace ToB.PriorityToDo.Objectives
 {
     public sealed class Measure : IMeasure

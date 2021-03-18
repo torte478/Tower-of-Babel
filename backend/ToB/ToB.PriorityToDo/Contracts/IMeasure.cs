@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ToB.PriorityToDo.Objectives
+namespace ToB.PriorityToDo.Contracts
 {
     public interface IMeasure
     {

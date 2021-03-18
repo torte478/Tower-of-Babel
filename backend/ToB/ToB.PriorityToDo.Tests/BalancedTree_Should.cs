@@ -2,17 +2,19 @@
 
 using NUnit.Framework;
 
+using ToB.PriorityToDo.Contracts;
+
 namespace ToB.PriorityToDo.Objectives.Tests
 {
     [TestFixture]
-    internal sealed class Foo_Should
+    internal sealed class BalancedTree_Should
     {
-        private IFoo<int> tree;
+        private IBalancedTree<int> tree;
 
         [SetUp]
         public void SetUp()
         {
-            tree = new Foo<int>(new Measure(4));
+            tree = new BalancedTree<int>(new Measure(4));
         }
 
         [Test]

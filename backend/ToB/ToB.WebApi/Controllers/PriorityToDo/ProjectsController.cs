@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using ToB.PriorityToDo;
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.Projects;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
@@ -9,9 +10,9 @@ namespace ToB.WebApi.Controllers.PriorityToDo
     [ApiController]
     public sealed class ProjectsController : ControllerBase
     {
-        private readonly IService service;
+        private readonly IProjectService service;
 
-        public ProjectsController(IService service)
+        public ProjectsController(IProjectService service)
         {
             this.service = service;
         }

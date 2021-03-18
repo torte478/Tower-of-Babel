@@ -1,4 +1,4 @@
-﻿namespace ToB.PriorityToDo.Objectives
+﻿namespace ToB.PriorityToDo.Contracts
 {
     public interface IProjects
     {

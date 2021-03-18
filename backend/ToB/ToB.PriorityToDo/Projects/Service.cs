@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ToB.Common.DB;
 using ToB.Common.Extensions;
+
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.DB;
 
 namespace ToB.PriorityToDo.Projects
 {
-    public sealed class Service : IService
+    public sealed class Service : IProjectService
     {
         private readonly ICrud<int, Project> crud;
         private readonly int root;

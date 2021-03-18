@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace ToB.PriorityToDo.Objectives
+namespace ToB.PriorityToDo.Contracts
 {
-    public interface IService
+    public interface IObjectiveService
     {
         IEnumerable<(int id, string text)> ToPriorityList(int project);
         int? FindRoot(int project);

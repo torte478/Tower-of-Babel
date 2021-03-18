@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToB.Common.DB;
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.DB;
 using ToB.PriorityToDo.Objectives;
 using ToB.PriorityToDo.Projects;
@@ -13,10 +14,6 @@ using ToB.PriorityToDo.Projects;
 using ToB.WebApi.DB;
 using ToB.WebApi.Interfaces;
 using ToB.WebApi.Services;
-
-using IService = ToB.PriorityToDo.Objectives.IService;
-using Project = ToB.PriorityToDo.Objectives.Project;
-using Service = ToB.PriorityToDo.Objectives.Service;
 
 namespace ToB.WebApi
 {
@@ -71,24 +68,24 @@ namespace ToB.WebApi
                 _.GetRequiredService<Context>(),
                 _ => _.Objectives));
 
-            services.AddSingleton<PriorityToDo.Projects.IService>(_ => new PriorityToDo.Projects.Service(
+            services.AddSingleton<IProjectService>(_ => new PriorityToDo.Projects.Service(
                 _.GetRequiredService<ICrud<int, PriorityToDo.DB.Project>>(),
                 1,
                 (projects, root) => new Trees(projects).Build(root)));
 
             services.AddTransient<IMeasure>(_ => new Measure(1024));
 
-            services.AddTransient<IFoo<int>, Foo<int>>();
+            services.AddTransient<IBalancedTree<int>, BalancedTree<int>>();
             
             services.AddTransient<IProjects>(_ => new Projects(
                 _.GetRequiredService<Context>(),
-                id => Project.Create(
+                id => PriorityToDo.Objectives.Project.Create(
                     project: id,
                     measure: _.GetRequiredService<IMeasure>(),
                     storage: _.GetRequiredService<ICrud<int, Objective>>(),
-                    createTree: _.GetRequiredService<IFoo<int>>)));
+                    createTree: _.GetRequiredService<IBalancedTree<int>>)));
 
-            services.AddSingleton<IService, Service>();
+            services.AddSingleton<IObjectiveService, PriorityToDo.Objectives.Service>();
 
             #endregion
             

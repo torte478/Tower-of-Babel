@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ToB.Common.Extensions;
+
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.Objectives.RBT;
 
 namespace ToB.PriorityToDo.Objectives
 {
-    public sealed class Foo<T> : IFoo<T>
+    public sealed partial class BalancedTree<T> : IBalancedTree<T>
     {
         private readonly RedBlackTree<Node> tree = new();
         private readonly IMeasure measure;
         
         public event Action<Dictionary<T, int>> Rebuilded;
 
-        public Foo(IMeasure measure)
+        public BalancedTree(IMeasure measure)
         {
             this.measure = measure;
         }
@@ -153,24 +156,5 @@ namespace ToB.PriorityToDo.Objectives
             tree.Add(added);
             return true;
         }
-
-
-        private sealed class Node : IComparable<Node>
-        {
-            public T Item { get;  }
-            public int Value { get; }
-            
-            public Node(T item, int value)
-            {
-                Item = item;
-                Value = value;
-            }
-
-            public int CompareTo(Node other)
-            {
-                return Value.CompareTo(other.Value);
-            }
-        }
-        
     }
 }

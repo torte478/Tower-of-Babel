@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using ToB.Common.Extensions;
+
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.DB;
 
 namespace ToB.PriorityToDo.Projects

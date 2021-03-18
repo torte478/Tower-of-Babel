@@ -1,6 +1,6 @@
-﻿namespace ToB.PriorityToDo.Projects
+﻿namespace ToB.PriorityToDo.Contracts
 {
-    public interface IService
+    public interface IProjectService
     {
         int Create(int parent, string name);
         TreeDto ToProjects();

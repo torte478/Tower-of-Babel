@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.Objectives;
 
 namespace ToB.WebApi.Controllers.PriorityToDo
@@ -11,9 +11,9 @@ namespace ToB.WebApi.Controllers.PriorityToDo
     [ApiController]
     public sealed class ObjectivesController : ControllerBase
     {
-        private readonly IService service;
+        private readonly IObjectiveService service;
 
-        public ObjectivesController(IService service)
+        public ObjectivesController(IObjectiveService service)
         {
             this.service = service;
         }

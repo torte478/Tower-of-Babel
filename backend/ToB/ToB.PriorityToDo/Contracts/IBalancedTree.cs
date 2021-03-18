@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ToB.PriorityToDo.Objectives
+namespace ToB.PriorityToDo.Contracts
 {
-    public interface IFoo<T>
+    public interface IBalancedTree<T>
     {
         event Action<Dictionary<T, int>> Rebuilded;
 

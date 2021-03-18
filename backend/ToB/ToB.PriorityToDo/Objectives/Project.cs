@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ToB.Common.DB;
+using ToB.PriorityToDo.Contracts;
 using ToB.PriorityToDo.DB;
 
 namespace ToB.PriorityToDo.Objectives
@@ -10,10 +11,10 @@ namespace ToB.PriorityToDo.Objectives
     public sealed class Project : IProject, IDisposable
     {
         private readonly int project;
-        private readonly IFoo<int> tree;
+        private readonly IBalancedTree<int> tree;
         private readonly ICrud<int, Objective> storage;
 
-        private Project(int project, IFoo<int> tree, ICrud<int, Objective> storage)
+        private Project(int project, IBalancedTree<int> tree, ICrud<int, Objective> storage)
         {
             this.project = project;
             this.tree = tree;
@@ -22,7 +23,7 @@ namespace ToB.PriorityToDo.Objectives
             tree.Rebuilded += UpdateStored;
         }
 
-        public static IProject Create(int project, IMeasure measure, ICrud<int, Objective> storage, Func<IFoo<int>> createTree)
+        public static IProject Create(int project, IMeasure measure, ICrud<int, Objective> storage, Func<IBalancedTree<int>> createTree)
         {
             var tree = createTree();
             foreach (var item in storage.List().Where(_ => _.Project == project))

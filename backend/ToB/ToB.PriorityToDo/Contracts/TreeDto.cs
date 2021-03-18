@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ToB.PriorityToDo.Projects
+namespace ToB.PriorityToDo.Contracts
 {
     public sealed class TreeDto
     {
